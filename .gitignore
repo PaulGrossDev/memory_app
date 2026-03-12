@@ -1,0 +1,9 @@
+# Dependencies
+node_modules/
+
+# Build output (falls Vite etwas baut)
+dist/
+
+# Logs und temporäre Dateien
+*.log
+.DS_Store
