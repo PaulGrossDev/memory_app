@@ -1,0 +1,19 @@
+/**
+ * Navigation – Seitenwechsel per Ein-/Ausblenden
+ */
+
+@use 'variables' as *;
+
+.page {
+  padding: $spacing-xl;
+  min-height: 100vh;
+
+  /* Versteckt, wenn nicht sichtbar – :not() sorgt für korrekte Spezifität */
+  &:not(.page--visible) {
+    display: none !important;
+  }
+
+  &--visible {
+    display: block;
+  }
+}

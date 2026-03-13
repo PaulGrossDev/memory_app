@@ -1,0 +1,24 @@
+/**
+ * Basis-Styles – Reset und globale Einstellungen
+ */
+
+@use 'variables' as *;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  color: $color-text;
+  background-color: #303131;
+  min-height: 100vh;
+}
+
+#app {
+  min-height: 100vh;
+}

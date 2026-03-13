@@ -1,11 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Memory App</title>
+    <title>Memory – Spiel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400&family=Red+Rose:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Memory App</h1>
+    <div id="app">
+        <!-- Startseite / Homescreen -->
+        <section id="home" class="page page--visible">
+            <div class="home__text">
+                <p class="home__subtitle">It's play time.</p>
+                <h1 class="home__title">Ready to play?</h1>
+            </div>
+        </section>
+
+        <!-- Einstellungen -->
+        <section id="settings" class="page">
+            <h2>Einstellungen</h2>
+            <p>Hier kommen später die Optionen für Spielerfarbe, Feldgröße und Theme.</p>
+            <button type="button" id="btn-start-game" class="btn btn--primary">
+                Spiel starten
+            </button>
+        </section>
+
+        <!-- Spielansicht -->
+        <section id="game" class="page">
+            <div class="game__header">
+                <span class="game__score">Punkte: 0 – 0</span>
+                <span class="game__player">Spieler 1</span>
+                <button type="button" id="btn-exit-game" class="btn btn--secondary">
+                    Exit Game
+                </button>
+            </div>
+            <div id="game-board" class="game__board">
+                <!-- Spielfeld wird dynamisch befüllt -->
+            </div>
+        </section>
+
+        <!-- Spielende -->
+        <section id="game-over" class="page">
+            <h2>Game Over</h2>
+            <p class="game-over__winner">Gewinner: –</p>
+            <p class="game-over__score">Punktestand: 0 – 0</p>
+            <button type="button" id="btn-home" class="btn btn--primary">
+                Zur Startseite
+            </button>
+        </section>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
 </body>
 </html>

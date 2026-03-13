@@ -1,0 +1,14 @@
+/**
+ * Einstellungsseite
+ */
+
+@use 'variables' as *;
+
+#settings {
+  max-width: 600px;
+  margin: 0 auto;
+
+  h2 {
+    margin-top: 0;
+  }
+}

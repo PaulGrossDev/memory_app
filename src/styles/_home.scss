@@ -1,0 +1,47 @@
+/**
+ * Startseite / Homescreen – nach Figma-Vorlage
+ */
+
+@use 'variables' as *;
+
+#home {
+  background-color: #303131;
+}
+
+#home.page--visible {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-xl;
+}
+
+/* Textblock: zentral, Zeilen links ausgerichtet */
+.home__text {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.home__subtitle {
+  margin: 0;
+  font-family: 'Almarai', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 48px;
+  line-height: 100%;
+  letter-spacing: 0;
+  color: white;
+}
+
+.home__title {
+  margin: 0;
+  font-family: 'Red Rose', serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 140px;
+  line-height: 100%;
+  letter-spacing: 0;
+  color: white;
+}

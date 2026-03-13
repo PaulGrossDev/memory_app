@@ -1,0 +1,21 @@
+/**
+ * Spielansicht
+ */
+
+@use 'variables' as *;
+
+.game__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-lg;
+  padding: $spacing-md;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+.game__board {
+  display: grid;
+  gap: $spacing-md;
+  /* Grid wird dynamisch je nach Feldgröße gesetzt */
+}

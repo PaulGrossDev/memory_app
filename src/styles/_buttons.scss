@@ -1,0 +1,33 @@
+/**
+ * Button-Styles – wiederverwendbar
+ */
+
+@use 'variables' as *;
+
+.btn {
+  padding: $spacing-md $spacing-xl;
+  font-size: $font-size-lg;
+  font-family: inherit;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color $transition-fast;
+
+  &--primary {
+    background-color: $color-primary;
+    color: white;
+
+    &:hover {
+      background-color: $color-primary-hover;
+    }
+  }
+
+  &--secondary {
+    background-color: $color-secondary;
+    color: white;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+}

@@ -1,0 +1,12 @@
+/**
+ * Haupt-SCSS – importiert alle Teilbereiche
+ */
+
+@use 'variables' as *;
+@use 'base';
+@use 'navigation';
+@use 'buttons';
+@use 'home';
+@use 'settings';
+@use 'game';
+@use 'gameOver';
