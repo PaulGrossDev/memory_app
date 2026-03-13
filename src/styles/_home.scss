@@ -5,7 +5,23 @@
 @use 'variables' as *;
 
 #home {
+  position: relative;
   background-color: #303131;
+  overflow: hidden;
+}
+
+/* Hintergrund-Controller – unten links, dezent */
+.home__controller-bg {
+  position: absolute;
+  bottom: 160px;
+  left: -80px;
+  width: 414.31px;
+  height: 301.31px;
+  /* 5% Transparenz = 95% sichtbar */
+  opacity: 0.05;
+  transform: rotate(37.42deg);
+  transform-origin: bottom left;
+  pointer-events: none;
 }
 
 #home.page--visible {
