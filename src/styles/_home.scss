@@ -45,3 +45,49 @@
   letter-spacing: 0;
   color: white;
 }
+
+/* Play-Button – nach Figma */
+.btn--play {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 24px;
+  background-color: #F0EA6E;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Red Rose', serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 40px;
+  line-height: 100%;
+  letter-spacing: 0;
+  color: #303131;
+  transition: transform $transition-normal;
+
+  &:hover {
+    transform: scale(1.05);
+
+    .btn__icon--controller {
+      transform: rotate(-40deg);
+    }
+  }
+}
+
+.btn__icon {
+  flex-shrink: 0;
+  transition: transform $transition-normal;
+
+  &--controller {
+    display: block;
+  }
+
+  &--arrow {
+    display: block;
+  }
+}
+
+.btn__text {
+  white-space: nowrap;
+}
