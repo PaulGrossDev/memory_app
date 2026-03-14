@@ -25,12 +25,153 @@
         </section>
 
         <!-- Einstellungen -->
-        <section id="settings" class="page">
-            <h2>Einstellungen</h2>
-            <p>Hier kommen später die Optionen für Spielerfarbe, Feldgröße und Theme.</p>
-            <button type="button" id="btn-start-game" class="btn btn--primary">
-                Spiel starten
-            </button>
+        <section id="settings" class="page settings">
+            <div class="settings__wrapper">
+                <header class="settings__header">
+                    <div class="settings__header-inner">
+                        <h2 class="settings__title">Settings</h2>
+                        <img src="/assets/icons/underline.svg" alt="" class="settings__underline" aria-hidden="true">
+                    </div>
+                </header>
+                <div class="settings__layout">
+                <!-- Linke Spalte: Auswahloptionen -->
+                <div class="settings__options">
+                    <div class="settings__group">
+                        <h3 class="settings__group-title">
+                            <img src="/assets/icons/game.svg" alt="" class="settings__icon settings__icon--game" width="27" height="27">
+                            Game themes
+                        </h3>
+                        <div class="settings__radios" id="settings-themes">
+                            <label class="settings__radio">
+                                <input type="radio" name="theme" value="code-vibes" checked>
+                                <span class="settings__radio-circle" aria-hidden="true"></span>
+                                <span class="settings__radio-label">
+                                    <span class="settings__radio-text">Code vibes theme</span>
+                                    <img src="/assets/icons/line.svg" alt="" class="settings__radio-line" aria-hidden="true">
+                                </span>
+                            </label>
+                            <label class="settings__radio">
+                                <input type="radio" name="theme" value="gaming">
+                                <span class="settings__radio-circle" aria-hidden="true"></span>
+                                <span class="settings__radio-label">
+                                    <span class="settings__radio-text">Gaming theme</span>
+                                    <img src="/assets/icons/line.svg" alt="" class="settings__radio-line" aria-hidden="true">
+                                </span>
+                            </label>
+                            <label class="settings__radio">
+                                <input type="radio" name="theme" value="da-projects">
+                                <span class="settings__radio-circle" aria-hidden="true"></span>
+                                <span class="settings__radio-label">
+                                    <span class="settings__radio-text">DA Projects theme</span>
+                                    <img src="/assets/icons/line.svg" alt="" class="settings__radio-line" aria-hidden="true">
+                                </span>
+                            </label>
+                            <label class="settings__radio">
+                                <input type="radio" name="theme" value="foods">
+                                <span class="settings__radio-circle" aria-hidden="true"></span>
+                                <span class="settings__radio-label">
+                                    <span class="settings__radio-text">Foods theme</span>
+                                    <img src="/assets/icons/line.svg" alt="" class="settings__radio-line" aria-hidden="true">
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="settings__group">
+                        <h3 class="settings__group-title">
+                            <img src="/assets/icons/player.svg" alt="" class="settings__icon settings__icon--player" width="22" height="27">
+                            Choose player
+                        </h3>
+                        <div class="settings__radios" id="settings-player">
+                            <label class="settings__radio">
+                                <input type="radio" name="player" value="blue" checked>
+                                <span class="settings__radio-circle" aria-hidden="true"></span>
+                                <span class="settings__radio-label">
+                                    <span class="settings__radio-text">Blue</span>
+                                    <img src="/assets/icons/line.svg" alt="" class="settings__radio-line" aria-hidden="true">
+                                </span>
+                            </label>
+                            <label class="settings__radio">
+                                <input type="radio" name="player" value="orange">
+                                <span class="settings__radio-circle" aria-hidden="true"></span>
+                                <span class="settings__radio-label">
+                                    <span class="settings__radio-text">Orange</span>
+                                    <img src="/assets/icons/line.svg" alt="" class="settings__radio-line" aria-hidden="true">
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="settings__group">
+                        <h3 class="settings__group-title">
+                            <img src="/assets/icons/board.svg" alt="" class="settings__icon settings__icon--board" width="27" height="26">
+                            Board size
+                        </h3>
+                        <div class="settings__radios" id="settings-board">
+                            <label class="settings__radio">
+                                <input type="radio" name="board" value="16" checked>
+                                <span class="settings__radio-circle" aria-hidden="true"></span>
+                                <span class="settings__radio-label">
+                                    <span class="settings__radio-text">16 cards</span>
+                                    <img src="/assets/icons/line.svg" alt="" class="settings__radio-line" aria-hidden="true">
+                                </span>
+                            </label>
+                            <label class="settings__radio">
+                                <input type="radio" name="board" value="24">
+                                <span class="settings__radio-circle" aria-hidden="true"></span>
+                                <span class="settings__radio-label">
+                                    <span class="settings__radio-text">24 cards</span>
+                                    <img src="/assets/icons/line.svg" alt="" class="settings__radio-line" aria-hidden="true">
+                                </span>
+                            </label>
+                            <label class="settings__radio">
+                                <input type="radio" name="board" value="36">
+                                <span class="settings__radio-circle" aria-hidden="true"></span>
+                                <span class="settings__radio-label">
+                                    <span class="settings__radio-text">36 cards</span>
+                                    <img src="/assets/icons/line.svg" alt="" class="settings__radio-line" aria-hidden="true">
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rechte Spalte: Theme-Vorschau -->
+                <div class="settings__preview-column">
+                    <div class="settings__preview" id="settings-preview">
+                        <div class="settings__preview-inner">
+                            <div class="settings__preview-pane settings__preview-pane--active" data-theme="code-vibes">
+                                <img src="/assets/theme_visual/code-vibes-theme.svg" alt="Code vibes Theme Vorschau" class="settings__preview-img">
+                            </div>
+                            <div class="settings__preview-pane" data-theme="gaming">
+                                <img src="/assets/theme_visual/gaming-theme.svg" alt="Gaming Theme Vorschau" class="settings__preview-img">
+                            </div>
+                            <div class="settings__preview-pane" data-theme="da-projects">
+                                <img src="/assets/theme_visual/da-projects-theme.svg" alt="DA Projects Theme Vorschau" class="settings__preview-img">
+                            </div>
+                            <div class="settings__preview-pane" data-theme="foods">
+                                <img src="/assets/theme_visual/foods-theme.svg" alt="Foods Theme Vorschau" class="settings__preview-img">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Start-Bar: unten rechts im Layout -->
+                <div class="settings__start-bar">
+                    <span class="settings__start-summary">
+                        <span class="settings__start-item" id="start-theme">Code vibes theme</span>
+                        <img src="/assets/icons/d-line.svg" alt="" class="settings__start-slash" aria-hidden="true">
+                        <span class="settings__start-item" id="start-player">Blue</span>
+                        <img src="/assets/icons/d-line.svg" alt="" class="settings__start-slash" aria-hidden="true">
+                        <span class="settings__start-item" id="start-board">16 cards</span>
+                    </span>
+                    <button type="button" id="btn-start-game" class="settings__start-btn">
+                        <img src="/assets/icons/start.svg" alt="" class="settings__start-btn-icon" aria-hidden="true">
+                        <span class="settings__start-btn-text">Start</span>
+                    </button>
+                </div>
+            </div>
+            </div>
         </section>
 
         <!-- Spielansicht -->

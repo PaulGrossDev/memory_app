@@ -1,14 +1,349 @@
 /**
- * Einstellungsseite
+ * Einstellungsseite – Layout nach Figma-Design
+ * Weißer Hintergrund, linke Optionen, rechte Vorschau, gelbe Akzente
  */
 
 @use 'variables' as *;
 
-#settings {
-  max-width: 600px;
-  margin: 0 auto;
+// Settings nutzt weißen Hintergrund (abweichend von restlicher App)
+#settings.page--visible {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #ffffff;
+  color: #303131;
+  padding: $spacing-xl;
+}
 
-  h2 {
-    margin-top: 0;
+.settings__wrapper {
+  position: relative;
+  width: 1103px;
+}
+
+.settings__header {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  margin-bottom: 4rem;
+  pointer-events: none;
+}
+
+.settings__header-inner {
+  position: relative;
+  display: inline-block;
+}
+
+.settings__title {
+  font-family: 'Red Rose', sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 54px;
+  line-height: 100%;
+  letter-spacing: 0;
+  text-align: left;
+  color: #303131;
+  margin: 0;
+}
+
+.settings__underline {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 100%;
+  margin-top: 4px;
+  display: block;
+  width: 263px;
+  height: auto;
+  object-fit: contain;
+}
+
+.settings__layout {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: $spacing-xl;
+  width: 1103px;
+  height: 539px;
+  box-sizing: border-box;
+}
+
+// ============================================
+// Linke Spalte: Auswahloptionen
+// ============================================
+
+.settings__options {
+  flex: 0 0 auto;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: $spacing-xl;
+}
+
+.settings__group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.settings__group-title {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  font-family: 'Almarai', sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 100%;
+  letter-spacing: 0;
+  color: #303131;
+  margin: 0;
+}
+
+.settings__icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  display: block;
+  object-fit: contain;
+}
+
+.settings__radios {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-left: 44px;
+}
+
+.settings__radio {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color $transition-fast;
+  position: relative;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+
+  &:hover .settings__radio-text {
+    color: #303131;
   }
 }
+
+.settings__radio input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Kreis: Outline mit Punkt in der Mitte wenn ausgewählt (wie im Design) */
+.settings__radio-circle {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #303131;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background-color: transparent;
+  position: relative;
+  transition: border-color $transition-fast;
+
+  /* Punkt in der Mitte nur bei ausgewählter Option */
+  &::after {
+    content: '';
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #303131;
+  }
+}
+
+/* Punkt im Kreis: nur bei Hover ODER bei Auswahl wenn nichts anderes gehovered wird */
+.settings__radio:hover .settings__radio-circle::after {
+  display: block;
+}
+
+.settings__radios:not(:has(.settings__radio:hover)) .settings__radio input:checked ~ .settings__radio-circle::after {
+  display: block;
+}
+
+/* Fett: nur bei Hover ODER bei Auswahl wenn nichts anderes gehovered wird */
+.settings__radio:hover .settings__radio-text {
+  font-weight: 700;
+}
+
+.settings__radios:not(:has(.settings__radio:hover)) .settings__radio input:checked ~ .settings__radio-label .settings__radio-text {
+  font-weight: 700;
+}
+
+/* Line-Icon: 8px Abstand zum Text – bei Auswahl ODER Hover sichtbar (ohne Rotation) */
+.settings__radio-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.settings__radio-line {
+  display: none;
+  width: 50px;
+  height: 18px;
+  object-fit: contain;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+/* Line sichtbar: nur bei Hover ODER bei Auswahl wenn nichts anderes gehovered wird */
+.settings__radio:hover .settings__radio-line {
+  display: inline-block;
+}
+
+.settings__radios:not(:has(.settings__radio:hover)) .settings__radio input:checked ~ .settings__radio-label .settings__radio-line {
+  display: inline-block;
+}
+
+.settings__radio-text {
+  font-size: 20px;
+  color: #303131;
+}
+
+// ============================================
+// Rechte Spalte: Vorschau + Start-Bar
+// ============================================
+
+.settings__preview-column {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: stretch;
+}
+
+// Theme-Vorschau (oben)
+.settings__preview {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.settings__preview-inner {
+  border-radius: 16px;
+  overflow: hidden;
+  min-height: 380px;
+  position: relative;
+  max-height: 412px;
+  width: 100%;
+  max-width: 460px;
+}
+
+.settings__preview-pane {
+  display: none;
+  position: absolute;
+  inset: 0;
+
+  &--active {
+    display: block;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+}
+
+// ============================================
+// Start-Container (Auswahl-Zusammenfassung + Start-Button)
+// ============================================
+
+// Start-Bar: unten rechts im Layout
+.settings__start-bar {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: fit-content;
+  padding: $spacing-md $spacing-xl;
+  background-color: #F6F6F6;
+  gap: $spacing-lg;
+  box-sizing: border-box;
+}
+
+.settings__start-summary {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  flex-wrap: wrap;
+}
+
+.settings__start-item {
+  font-family: 'Almarai', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0;
+  color: #303131;
+
+  &--player-blue {
+    color: blue;
+  }
+
+  &--player-orange {
+    color: orange;
+  }
+}
+
+.settings__start-slash {
+  width: 24px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.settings__start-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 20px;
+  background-color: #F0EA6E;
+  border: none;
+  cursor: pointer;
+  transition: opacity $transition-fast;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.settings__start-btn-icon {
+  width: 20px;
+  height: 16px;
+  object-fit: contain;
+}
+
+.settings__start-btn-text {
+  font-family: 'Red Rose', sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0;
+  color: #303131;
+}
+
