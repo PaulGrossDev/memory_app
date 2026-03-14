@@ -23,6 +23,34 @@ export interface GameSettings {
 export interface Theme {
   id: ThemeId;
   name: string;
+  /** Vollbild-Hintergrundfarbe beim Spiel (ganzer Bildschirm) */
+  pageBackground: string;
+  /** Hintergrundfarbe des Spiel-Headers (Score, Spieler, Exit) */
+  headerBackground: string;
+  /** Exit-Button: Icon, Schrift und Button-Styling (pro Theme unterschiedlich) */
+  exitButton: {
+    icon: string;
+    fontFamily: string;
+    fontWeight: number;
+    fontSize: string;
+    color: string;
+    /** Button-Container: gap, padding, background, border, border-radius */
+    gap?: string;
+    padding?: string;
+    background?: string;
+    border?: string;
+    borderRadius?: string;
+    /** Hover-Zustand (optional, pro Theme) */
+    hover?: {
+      background?: string;
+      border?: string;
+      boxShadow?: string;
+      /** Schriftfarbe beim Hover (z.B. weiß) */
+      color?: string;
+      /** Pfad zum Icon in Hover-Farbe (z.B. exit-hover.svg) */
+      iconHover?: string;
+    };
+  };
   /** Farben für das Theme (Hintergrund, Karten, Akzente) */
   colors: {
     primary: string;

@@ -6,7 +6,7 @@
     <title>Memory – Spiel</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400&family=Red+Rose:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400&family=Red+Rose:wght@700&family=Orbitron:wght@700&family=Figtree:wght@700&family=Delius+Unicase:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -179,8 +179,12 @@
             <div class="game__header">
                 <span class="game__score">Punkte: 0 – 0</span>
                 <span class="game__player">Spieler 1</span>
-                <button type="button" id="btn-exit-game" class="btn btn--secondary">
-                    Exit Game
+                <button type="button" id="btn-exit-game" class="game__exit-btn">
+                    <span class="game__exit-icon-wrapper">
+                        <img src="/assets/themes/code-vibes/icons/exit.svg" alt="" class="game__exit-icon game__exit-icon--default" width="26" height="23" aria-hidden="true">
+                        <img src="/assets/themes/code-vibes/icons/exit.svg" alt="" class="game__exit-icon game__exit-icon--hover" width="26" height="23" aria-hidden="true">
+                    </span>
+                    <span class="game__exit-text">Exit Game</span>
                 </button>
             </div>
             <div id="game-board" class="game__board">

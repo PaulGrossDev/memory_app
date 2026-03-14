@@ -5,8 +5,8 @@
 
 import './styles/main.scss';
 import { getSettings, setSettings } from './state/gameState';
-import { THEMES } from './data/themes';
-import type { ThemeId } from './types/game.types';
+import { THEMES, getThemeById } from './data/themes';
+import type { ThemeId, Theme } from './types/game.types';
 
 // ============================================
 // Navigation – einfache Seitenwechsel-Logik
@@ -14,6 +14,72 @@ import type { ThemeId } from './types/game.types';
 
 /** Alle möglichen Seiten-IDs */
 type PageId = 'home' | 'settings' | 'game' | 'game-over';
+
+/** Setzt Hintergrundfarben und Exit-Button-Styling je nach Seite und Theme */
+function applyPageBackground(pageId: PageId): void {
+  let bgColor: string;
+  let headerBg: string;
+
+  if (pageId === 'home') {
+    bgColor = '#303131';
+    headerBg = 'transparent';
+  } else if (pageId === 'settings') {
+    bgColor = '#ffffff';
+    headerBg = 'transparent';
+  } else if (pageId === 'game' || pageId === 'game-over') {
+    const theme = getThemeById(getSettings().theme);
+    bgColor = theme?.pageBackground ?? '#303131';
+    headerBg = theme?.headerBackground ?? 'transparent';
+    applyExitButtonTheme(theme);
+  } else {
+    bgColor = '#303131';
+    headerBg = 'transparent';
+  }
+
+  document.body.style.backgroundColor = bgColor;
+  document.documentElement.style.setProperty('--color-header-bg', headerBg);
+}
+
+/** Wendet das Theme-Styling auf den Exit-Button an (Icon, Schrift, Button-Container) */
+function applyExitButtonTheme(theme: { exitButton: Theme['exitButton'] } | undefined): void {
+  if (!theme?.exitButton) return;
+
+  const btn = document.getElementById('btn-exit-game');
+  const iconDefault = btn?.querySelector<HTMLImageElement>('.game__exit-icon--default');
+  const iconHover = btn?.querySelector<HTMLImageElement>('.game__exit-icon--hover');
+  const { icon: iconPath, fontFamily, fontWeight, fontSize, color, gap, padding, background, border, borderRadius, hover } = theme.exitButton;
+
+  document.documentElement.style.setProperty('--exit-btn-font-family', fontFamily);
+  document.documentElement.style.setProperty('--exit-btn-font-weight', String(fontWeight));
+  document.documentElement.style.setProperty('--exit-btn-font-size', fontSize);
+  document.documentElement.style.setProperty('--exit-btn-color', color);
+  document.documentElement.style.setProperty('--exit-btn-gap', gap ?? '10px');
+  document.documentElement.style.setProperty('--exit-btn-padding', padding ?? '12px 20px');
+  document.documentElement.style.setProperty('--exit-btn-background', background ?? 'transparent');
+  document.documentElement.style.setProperty('--exit-btn-border', border ?? 'none');
+  document.documentElement.style.setProperty('--exit-btn-border-radius', borderRadius ?? '0');
+  document.documentElement.style.setProperty('--exit-btn-hover-background', hover?.background ?? (background ?? 'transparent'));
+  document.documentElement.style.setProperty('--exit-btn-hover-border', hover?.border ?? (border ?? 'none'));
+  document.documentElement.style.setProperty('--exit-btn-hover-box-shadow', hover?.boxShadow ?? 'none');
+  document.documentElement.style.setProperty('--exit-btn-hover-color', hover?.color ?? color);
+
+  const base = import.meta.env.BASE_URL;
+  const resolvePath = (p: string): string => {
+    const path = p.startsWith('/') ? p.slice(1) : p;
+    const baseUrl = base === '/' ? window.location.origin + '/' : window.location.origin + base;
+    return new URL(path, baseUrl).href;
+  };
+
+  if (iconDefault) {
+    iconDefault.src = resolvePath(iconPath);
+    iconDefault.alt = '';
+  }
+  if (iconHover) {
+    const hoverPath = hover?.iconHover ?? iconPath;
+    iconHover.src = resolvePath(hoverPath);
+    iconHover.alt = '';
+  }
+}
 
 /** Zeigt die gewünschte Seite an und blendet die anderen aus */
 function showPage(pageId: PageId): void {
@@ -30,6 +96,7 @@ function showPage(pageId: PageId): void {
   });
 
   targetPage.classList.add('page--visible');
+  applyPageBackground(pageId);
 }
 
 /** Zeigt die Theme-Vorschau für das angegebene Theme */

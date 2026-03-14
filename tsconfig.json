@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+      "types": ["vite/client"],
       /* Sprache & Zielumgebung */
       "target": "ESNext",                  // moderne Syntax, gut für Browser + Vite
       "lib": ["ESNext", "DOM"],            // Browser-APIs und moderne JS-Funktionen

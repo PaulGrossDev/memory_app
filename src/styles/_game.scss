@@ -10,8 +10,62 @@
   align-items: center;
   margin-bottom: $spacing-lg;
   padding: $spacing-md;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: var(--color-header-bg, transparent);
   border-radius: 8px;
+}
+
+.game__exit-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--exit-btn-gap, 10px);
+  padding: var(--exit-btn-padding, 12px 20px);
+  background: var(--exit-btn-background, transparent);
+  border: var(--exit-btn-border, none);
+  border-radius: var(--exit-btn-border-radius, 0);
+  cursor: pointer;
+  font-family: var(--exit-btn-font-family, 'Red Rose');
+  font-weight: var(--exit-btn-font-weight, 700);
+  font-size: var(--exit-btn-font-size, 24px);
+  color: var(--exit-btn-color, #ffffff);
+  transition: background 0.2s ease-in-out, border 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
+
+  &:hover {
+    background: var(--exit-btn-hover-background, var(--exit-btn-background));
+    border: var(--exit-btn-hover-border, var(--exit-btn-border));
+    box-shadow: var(--exit-btn-hover-box-shadow, none);
+    color: var(--exit-btn-hover-color, var(--exit-btn-color));
+  }
+}
+
+.game__exit-icon-wrapper {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.game__exit-icon {
+  width: 26px;
+  height: 23px;
+  transition: opacity 0.2s ease-in-out;
+
+  &--hover {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+  }
+}
+
+.game__exit-btn:hover .game__exit-icon--default {
+  opacity: 0;
+}
+
+.game__exit-btn:hover .game__exit-icon--hover {
+  opacity: 1;
+}
+
+.game__exit-text {
+  /* Text nutzt die CSS-Variablen vom Button */
 }
 
 .game__board {
