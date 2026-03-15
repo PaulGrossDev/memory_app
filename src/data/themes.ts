@@ -16,6 +16,20 @@ export const THEMES: Theme[] = [
     id: 'code-vibes',
     name: 'Code vibes theme',
     pageBackground: '#303131',
+    gameOverBackground: '#303131',
+    gameOverTitleGap: '124px',
+    gameOverFinalScore: {
+      fontFamily: 'Red Rose',
+      fontWeight: 400,
+      fontSize: '26px',
+      color: '#FFFFFF',
+    },
+    gameOverTitle: {
+      type: 'svg-letters',
+      iconsPath: '/assets/themes/code-vibes/icons/',
+      /** Mehrere drop-shadows: heller Schicht hinter den Buchstaben + Hauptglow */
+      dropShadow: '-3px -3px 0 #A8F0E8, -7px 0px 8px #4DD5BC80',
+    },
     headerBackground: 'transparent',
     exitButton: {
       icon: '/assets/themes/code-vibes/icons/exit.svg',
@@ -106,6 +120,22 @@ export const THEMES: Theme[] = [
     id: 'gaming',
     name: 'Gaming theme',
     pageBackground: '#294F60',
+    gameOverBackground: '#294F60',
+    gameOverTitleGap: '104px',
+    gameOverFinalScore: {
+      fontFamily: 'Red Rose',
+      fontWeight: 400,
+      fontSize: '26px',
+      color: '#FFFFFF',
+    },
+    gameOverTitle: {
+      type: 'text',
+      fontFamily: 'Orbitron',
+      fontWeight: 900,
+      fontSize: '124px',
+      color: '#ED1B76',
+      letterSpacing: '0.07em',
+    },
     headerBackground: '#FD96C933',
     exitButton: {
       icon: '/assets/themes/gaming/icons/exit.svg',
@@ -207,6 +237,21 @@ export const THEMES: Theme[] = [
     id: 'da-projects',
     name: 'DA Projects theme',
     pageBackground: '#FFFFFF',
+    gameOverBackground: '#294F60',
+    gameOverFinalScore: {
+      fontFamily: 'Figtree',
+      fontWeight: 500,
+      fontSize: '40px',
+      color: '#FFFFFF',
+    },
+    gameOverTitle: {
+      type: 'text',
+      fontFamily: 'Figtree',
+      fontWeight: 800,
+      fontSize: '130px',
+      color: '#FD5B4F',
+      textShadow: '0px 4px 4px #00000040',
+    },
     headerBackground: '#F0F3F4',
     exitButton: {
       icon: '/assets/themes/da-projects/icons/exit.svg',
@@ -304,6 +349,22 @@ export const THEMES: Theme[] = [
     id: 'foods',
     name: 'Foods theme',
     pageBackground: '#FFFFFF',
+    gameOverBackground: '#F3832D',
+    gameOverTitleGap: '104px',
+    gameOverFinalScore: {
+      fontFamily: 'Klee One',
+      fontWeight: 600,
+      fontSize: '42px',
+      color: '#FFFFFF',
+    },
+    gameOverTitle: {
+      type: 'text',
+      fontFamily: 'Klee One',
+      fontWeight: 600,
+      fontSize: '130px',
+      color: '#FFFFFF',
+      textShadow: '0px 4px 4px #00000040',
+    },
     headerBackground: '#F0E5D9',
     exitButton: {
       icon: '/assets/themes/foods/icons/exit.svg',

@@ -25,6 +25,33 @@ export interface Theme {
   name: string;
   /** Vollbild-Hintergrundfarbe beim Spiel (ganzer Bildschirm) */
   pageBackground: string;
+  /** Hintergrundfarbe der Game-Over-Seite */
+  gameOverBackground?: string;
+  /** Abstand zwischen GAME OVER Titel und Final score (px) */
+  gameOverTitleGap?: string;
+  /** "Final score" Text unter dem GAME OVER Titel */
+  gameOverFinalScore?: {
+    fontFamily: string;
+    fontWeight: number;
+    fontSize: string;
+    color: string;
+  };
+  /** "GAME OVER" Titel – SVG-Buchstaben (code-vibes) oder Text */
+  gameOverTitle?: {
+    type: 'svg-letters';
+    iconsPath: string;
+    /** filter: drop-shadow() – Komma-getrennt für mehrere Schichten */
+    dropShadow?: string;
+  } | {
+    type: 'text';
+    fontFamily: string;
+    fontWeight: number;
+    fontSize: string;
+    color: string;
+    /** text-shadow für Schatten an den Buchstaben (nicht am Container) */
+    textShadow?: string;
+    letterSpacing?: string;
+  };
   /** Hintergrundfarbe des Spiel-Headers (Score, Spieler, Exit) */
   headerBackground: string;
   /** Exit-Button: Icon, Schrift und Button-Styling (pro Theme unterschiedlich) */

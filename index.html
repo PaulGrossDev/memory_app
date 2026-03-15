@@ -221,13 +221,25 @@
         </section>
 
         <!-- Spielende -->
-        <section id="game-over" class="page">
-            <h2>Game Over</h2>
-            <p class="game-over__winner">Gewinner: –</p>
-            <p class="game-over__score">Punktestand: 0 – 0</p>
-            <button type="button" id="btn-home" class="btn btn--primary">
-                Zur Startseite
-            </button>
+        <section id="game-over" class="page game-over">
+            <div class="game-over__top">
+                <div id="game-over-title" class="game-over__title"></div>
+                <div class="game-over__final-section">
+                <p id="game-over-final-score" class="game-over__final-score">Final score</p>
+                <div class="game__score" id="game-over-score">
+                    <div class="game__score-item game__score-item--blue">
+                        <img src="/assets/icons/label-blue.svg" alt="" class="game__score-icon game__score-icon--blue" aria-hidden="true">
+                        <span class="game__score-label">Blue</span>
+                        <span class="game__score-value" id="game-over-score-blue">0</span>
+                    </div>
+                    <div class="game__score-item game__score-item--orange">
+                        <img src="/assets/icons/label-orange.svg" alt="" class="game__score-icon game__score-icon--orange" aria-hidden="true">
+                        <span class="game__score-label">Orange</span>
+                        <span class="game__score-value" id="game-over-score-orange">0</span>
+                    </div>
+                </div>
+                </div>
+            </div>
         </section>
     </div>
 

@@ -40,7 +40,9 @@ function applyPageBackground(pageId: PageId): void {
     headerBg = 'transparent';
   } else if (pageId === 'game' || pageId === 'game-over') {
     const theme = getThemeById(getSettings().theme);
-    bgColor = theme?.pageBackground ?? '#303131';
+    bgColor = pageId === 'game-over'
+      ? (theme?.gameOverBackground ?? theme?.pageBackground ?? '#303131')
+      : (theme?.pageBackground ?? '#303131');
     headerBg = theme?.headerBackground ?? 'transparent';
     applyExitButtonTheme(theme);
     applyCurrentPlayerTheme(theme);
@@ -52,6 +54,12 @@ function applyPageBackground(pageId: PageId): void {
       renderGameBoard();
       updateScoreDisplay();
       updateCurrentPlayerIndicator();
+    } else if (pageId === 'game-over') {
+      renderGameOverTitle(theme);
+      applyGameOverFinalScoreTheme(theme);
+      applyGameOverScoreTheme(theme);
+      updateGameOverScore();
+      document.documentElement.style.setProperty('--game-over-title-gap', theme?.gameOverTitleGap ?? '104px');
     }
   } else {
     bgColor = '#303131';
@@ -385,24 +393,110 @@ function unflipCard(cardEl: HTMLButtonElement): void {
   cardEl.classList.remove('game__card--flipped');
 }
 
-/** Zeigt die Game-Over-Seite mit Gewinner und Punktestand */
-function showGameOver(): void {
-  const { scoreBlue, scoreOrange } = getRuntimeState();
-  const winnerEl = document.querySelector<HTMLElement>('.game-over__winner');
-  const scoreEl = document.querySelector<HTMLElement>('.game-over__score');
+/** Rendert den "GAME OVER" Titel je nach Theme (SVG-Buchstaben oder Text) */
+function renderGameOverTitle(theme: Theme | undefined): void {
+  const container = document.getElementById('game-over-title');
+  if (!container || !theme?.gameOverTitle) return;
 
-  let winnerText: string;
-  if (scoreBlue > scoreOrange) {
-    winnerText = 'Blue gewinnt!';
-  } else if (scoreOrange > scoreBlue) {
-    winnerText = 'Orange gewinnt!';
+  const base = import.meta.env.BASE_URL;
+  const resolvePath = (p: string): string => {
+    const path = p.startsWith('/') ? p.slice(1) : p;
+    const baseUrl = base === '/' ? window.location.origin + '/' : window.location.origin + base;
+    return new URL(path, baseUrl).href;
+  };
+
+  container.innerHTML = '';
+  container.className = 'game-over__title';
+
+  const title = theme.gameOverTitle;
+  if (title.type === 'svg-letters') {
+    container.classList.add('game-over__title--svg');
+    const letters = ['g', 'a', 'm', 'e', 'o', 'v', 'e', 'r'];
+    const iconsPath = title.iconsPath.endsWith('/') ? title.iconsPath : title.iconsPath + '/';
+    letters.forEach((letter, i) => {
+      const img = document.createElement('img');
+      img.src = resolvePath(iconsPath + letter + '.svg');
+      img.alt = '';
+      img.className = 'game-over__letter';
+      img.setAttribute('aria-hidden', 'true');
+      if (title.dropShadow) {
+        const shadows = title.dropShadow.split(',').map((s) => s.trim());
+        img.style.filter = shadows.map((s) => `drop-shadow(${s})`).join(' ');
+      }
+      container.appendChild(img);
+      if (i === 3) {
+        const space = document.createElement('span');
+        space.className = 'game-over__space';
+        space.setAttribute('aria-hidden', 'true');
+        container.appendChild(space);
+      }
+    });
   } else {
-    winnerText = 'Unentschieden!';
+    container.classList.add('game-over__title--text');
+    const span = document.createElement('span');
+    span.textContent = 'GAME OVER';
+    span.className = 'game-over__title-text';
+    container.appendChild(span);
+    document.documentElement.style.setProperty('--game-over-font-family', title.fontFamily);
+    document.documentElement.style.setProperty('--game-over-font-weight', String(title.fontWeight));
+    document.documentElement.style.setProperty('--game-over-font-size', title.fontSize);
+    document.documentElement.style.setProperty('--game-over-color', title.color);
+    document.documentElement.style.setProperty('--game-over-text-shadow', title.textShadow ?? 'none');
+    document.documentElement.style.setProperty('--game-over-letter-spacing', title.letterSpacing ?? 'normal');
   }
+}
 
-  if (winnerEl) winnerEl.textContent = `Gewinner: ${winnerText}`;
-  if (scoreEl) scoreEl.textContent = `Punktestand: ${scoreBlue} – ${scoreOrange}`;
+/** Wendet das Theme-Styling auf die Game-Over-Score-Anzeige an (label/figure, Icons) */
+function applyGameOverScoreTheme(theme: Theme | undefined): void {
+  const score = theme?.scoreDisplay;
+  const scoreEl = document.getElementById('game-over-score');
+  const iconBlue = scoreEl?.querySelector<HTMLImageElement>('.game__score-icon--blue');
+  const iconOrange = scoreEl?.querySelector<HTMLImageElement>('.game__score-icon--orange');
+  if (!score || !scoreEl) return;
 
+  const base = import.meta.env.BASE_URL;
+  const resolvePath = (p: string): string => {
+    const path = p.startsWith('/') ? p.slice(1) : p;
+    const baseUrl = base === '/' ? window.location.origin + '/' : window.location.origin + base;
+    return new URL(path, baseUrl).href;
+  };
+
+  scoreEl.classList.remove('game__score--label', 'game__score--figure');
+  scoreEl.classList.add(score.type === 'label' ? 'game__score--label' : 'game__score--figure');
+
+  if (score.type === 'label') {
+    if (iconBlue) iconBlue.src = resolvePath('/assets/icons/label-blue.svg');
+    if (iconOrange) iconOrange.src = resolvePath('/assets/icons/label-orange.svg');
+  } else {
+    if (iconBlue) iconBlue.src = resolvePath('/assets/icons/figure-blue.svg');
+    if (iconOrange) iconOrange.src = resolvePath('/assets/icons/figure-orange.svg');
+  }
+}
+
+/** Aktualisiert die Punktestand-Anzeige auf der Game-Over-Seite */
+function updateGameOverScore(): void {
+  const { scoreBlue, scoreOrange } = getRuntimeState();
+  const elBlue = document.getElementById('game-over-score-blue');
+  const elOrange = document.getElementById('game-over-score-orange');
+  if (elBlue) elBlue.textContent = String(scoreBlue);
+  if (elOrange) elOrange.textContent = String(scoreOrange);
+}
+
+/** Wendet das Theme-Styling auf den "Final score" Text an */
+function applyGameOverFinalScoreTheme(theme: Theme | undefined): void {
+  const finalScore = theme?.gameOverFinalScore;
+  const el = document.getElementById('game-over-final-score');
+  if (!finalScore || !el) return;
+
+  el.textContent = 'Final score';
+  document.documentElement.style.setProperty('--game-over-final-score-font-family', finalScore.fontFamily);
+  document.documentElement.style.setProperty('--game-over-final-score-font-weight', String(finalScore.fontWeight));
+  document.documentElement.style.setProperty('--game-over-final-score-font-size', finalScore.fontSize);
+  document.documentElement.style.setProperty('--game-over-final-score-color', finalScore.color);
+}
+
+/** Zeigt die Game-Over-Seite */
+function showGameOver(): void {
   showPage('game-over');
 }
 
@@ -552,6 +646,20 @@ function setupGameBoardListeners(): void {
   boardEl?.addEventListener('click', handleCardClick);
 }
 
+/** Shortcut: Ctrl+Shift+G springt zum Game-Over-Screen (nur im Spiel) */
+function setupGameOverShortcut(): void {
+  document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.shiftKey && e.key?.toLowerCase() === 'g') {
+      const gamePage = document.getElementById('game');
+      if (gamePage?.classList.contains('page--visible')) {
+        e.preventDefault();
+        hideExitConfirmModal();
+        showGameOver();
+      }
+    }
+  });
+}
+
 function setupNavigation(): void {
   const btnStart = document.getElementById('btn-start');
   const btnStartGame = document.getElementById('btn-start-game');
@@ -644,6 +752,7 @@ function setupStartBarUpdates(): void {
 document.addEventListener('DOMContentLoaded', () => {
   setupNavigation();
   setupGameBoardListeners();
+  setupGameOverShortcut();
   setupSettingsThemeHover();
   setupSettingsThemeChange();
   setupStartBarUpdates();
