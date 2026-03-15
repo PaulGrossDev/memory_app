@@ -59,6 +59,7 @@ export const THEMES: Theme[] = [
       cardBg: '#f8fafc',
       accent: '#FFDD47',
     },
+    cardsPath: '/assets/themes/code-vibes/cards/',
     previewCardColors: ['#2dd4bf', '#f8fafc'],
     previewImages: {
       image1: '/assets/themes/code-vibes-card1.svg',
@@ -119,6 +120,7 @@ export const THEMES: Theme[] = [
       cardBg: '#1e293b',
       accent: '#FFDD47',
     },
+    cardsPath: '/assets/themes/gaming/cards/',
     previewCardColors: ['#6366f1', '#ec4899'],
     previewImages: {
       image1: '/assets/themes/gaming-card1.svg',
@@ -178,6 +180,7 @@ export const THEMES: Theme[] = [
       cardBg: '#fefce8',
       accent: '#FFDD47',
     },
+    cardsPath: '/assets/themes/da-projects/cards/',
     previewCardColors: ['#3b82f6', '#10b981'],
     previewImages: {
       image1: '/assets/themes/da-projects-card1.svg',
@@ -238,6 +241,7 @@ export const THEMES: Theme[] = [
       cardBg: '#fef3c7',
       accent: '#FFDD47',
     },
+    cardsPath: '/assets/themes/foods/cards/',
     previewCardColors: ['#f59e0b', '#ef4444'],
     previewImages: {
       image1: '/assets/themes/foods-card1.svg',

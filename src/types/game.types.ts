@@ -83,6 +83,8 @@ export interface Theme {
     colorBlue?: string;
     colorOrange?: string;
   };
+  /** Basis-Pfad für Kartenbilder (z.B. /assets/themes/code-vibes/cards/) */
+  cardsPath?: string;
   /** Farben für das Theme (Hintergrund, Karten, Akzente) */
   colors: {
     primary: string;
