@@ -60,6 +60,9 @@ export const THEMES: Theme[] = [
       accent: '#FFDD47',
     },
     cardsPath: '/assets/themes/code-vibes/cards/',
+    cardBaseName: 'Cards 5',
+    backsitePath: '/assets/themes/code-vibes/backsite.png',
+    boardGap: '6px',
     previewCardColors: ['#2dd4bf', '#f8fafc'],
     previewImages: {
       image1: '/assets/themes/code-vibes-card1.svg',
@@ -121,6 +124,9 @@ export const THEMES: Theme[] = [
       accent: '#FFDD47',
     },
     cardsPath: '/assets/themes/gaming/cards/',
+    cardBaseName: 'Rectangle 37',
+    backsitePath: '/assets/themes/gaming/backsite.png',
+    boardGap: '6px',
     previewCardColors: ['#6366f1', '#ec4899'],
     previewImages: {
       image1: '/assets/themes/gaming-card1.svg',
@@ -181,6 +187,9 @@ export const THEMES: Theme[] = [
       accent: '#FFDD47',
     },
     cardsPath: '/assets/themes/da-projects/cards/',
+    cardBaseName: 'Frame 727',
+    backsitePath: '/assets/themes/da-projects/backsite.png',
+    boardGap: '8px',
     previewCardColors: ['#3b82f6', '#10b981'],
     previewImages: {
       image1: '/assets/themes/da-projects-card1.svg',
@@ -242,6 +251,9 @@ export const THEMES: Theme[] = [
       accent: '#FFDD47',
     },
     cardsPath: '/assets/themes/foods/cards/',
+    cardBaseName: 'frond',
+    backsitePath: '/assets/themes/foods/backsite.png',
+    boardGap: '6px',
     previewCardColors: ['#f59e0b', '#ef4444'],
     previewImages: {
       image1: '/assets/themes/foods-card1.svg',

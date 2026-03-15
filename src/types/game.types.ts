@@ -6,7 +6,7 @@
 /** Spielerfarbe – entspricht der Auswahl in den Settings */
 export type PlayerColor = 'blue' | 'orange';
 
-/** Spielfeldgröße – 16 Karten (4×4), 24 Karten (4×6), 36 Karten (6×6) */
+/** Spielfeldgröße – 16 Karten (4×4), 24 Karten (6×4), 36 Karten (6×6) */
 export type BoardSize = '16' | '24' | '36';
 
 /** Theme-ID – entspricht den 4 Figma-Designvorlagen */
@@ -85,6 +85,12 @@ export interface Theme {
   };
   /** Basis-Pfad für Kartenbilder (z.B. /assets/themes/code-vibes/cards/) */
   cardsPath?: string;
+  /** Basis-Name der Kartenbilder (z.B. "Cards 5" → Cards 5.png, Cards 5 (1).png) */
+  cardBaseName?: string;
+  /** Pfad zur Kartenrückseite */
+  backsitePath?: string;
+  /** Abstand zwischen Karten im Grid (px) */
+  boardGap?: string;
   /** Farben für das Theme (Hintergrund, Karten, Akzente) */
   colors: {
     primary: string;

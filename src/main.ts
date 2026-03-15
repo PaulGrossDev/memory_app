@@ -4,7 +4,19 @@
  */
 
 import './styles/main.scss';
-import { getSettings, setSettings } from './state/gameState';
+import {
+  getSettings,
+  setSettings,
+  resetRuntimeState,
+  getRuntimeState,
+  addScore,
+  switchPlayer,
+  addFlippedIndex,
+  clearFlippedIndices,
+  addMatchedPair,
+  areAllPairsMatched,
+  setLocked,
+} from './state/gameState';
 import { THEMES, getThemeById, PLAYER_COLORS } from './data/themes';
 import type { ThemeId, Theme } from './types/game.types';
 
@@ -34,6 +46,12 @@ function applyPageBackground(pageId: PageId): void {
     applyCurrentPlayerTheme(theme);
     applyPlayerIndicatorTheme(theme);
     applyScoreDisplayTheme(theme);
+    applyBoardTheme(theme);
+    if (pageId === 'game') {
+      renderGameBoard();
+      updateScoreDisplay();
+      updateCurrentPlayerIndicator();
+    }
   } else {
     bgColor = '#303131';
     headerBg = 'transparent';
@@ -102,7 +120,6 @@ function applyPlayerIndicatorTheme(theme: Theme | undefined): void {
   const iconEl = indicatorEl?.querySelector<HTMLImageElement>('.game__player-icon');
   if (!indicator || !indicatorEl || !iconEl) return;
 
-  const playerColor = getSettings().playerColor;
   const base = import.meta.env.BASE_URL;
   const resolvePath = (p: string): string => {
     const path = p.startsWith('/') ? p.slice(1) : p;
@@ -112,9 +129,10 @@ function applyPlayerIndicatorTheme(theme: Theme | undefined): void {
 
   indicatorEl.classList.remove('game__player-indicator--label', 'game__player-indicator--figure');
 
+  const currentPlayer = getRuntimeState().currentPlayer;
   if (indicator.type === 'label') {
     indicatorEl.classList.add('game__player-indicator--label');
-    const iconPath = playerColor === 'blue' ? '/assets/icons/label-blue.svg' : '/assets/icons/label-orange.svg';
+    const iconPath = currentPlayer === 'blue' ? '/assets/icons/label-blue.svg' : '/assets/icons/label-orange.svg';
     iconEl.src = resolvePath(iconPath);
     document.documentElement.style.removeProperty('--player-indicator-bg');
     document.documentElement.style.removeProperty('--player-indicator-border-radius');
@@ -122,9 +140,40 @@ function applyPlayerIndicatorTheme(theme: Theme | undefined): void {
   } else {
     indicatorEl.classList.add('game__player-indicator--figure');
     iconEl.src = resolvePath('/assets/icons/figure-white.svg');
-    document.documentElement.style.setProperty('--player-indicator-bg', PLAYER_COLORS[playerColor]);
+    document.documentElement.style.setProperty('--player-indicator-bg', PLAYER_COLORS[currentPlayer]);
     document.documentElement.style.setProperty('--player-indicator-border-radius', indicator.borderRadius ?? '8px');
     document.documentElement.style.setProperty('--player-indicator-padding', indicator.padding ?? '4px 8px');
+  }
+}
+
+/** Aktualisiert die Score-Anzeige (Blue/Orange) aus dem Laufzeit-Zustand */
+function updateScoreDisplay(): void {
+  const { scoreBlue, scoreOrange } = getRuntimeState();
+  const elBlue = document.getElementById('score-blue');
+  const elOrange = document.getElementById('score-orange');
+  if (elBlue) elBlue.textContent = String(scoreBlue);
+  if (elOrange) elOrange.textContent = String(scoreOrange);
+}
+
+/** Aktualisiert den Spieler-Indikator (Icon/Farbe) auf den aktuellen Spieler */
+function updateCurrentPlayerIndicator(): void {
+  const indicatorEl = document.getElementById('game-player-indicator');
+  const iconEl = indicatorEl?.querySelector<HTMLImageElement>('.game__player-icon');
+  if (!indicatorEl || !iconEl) return;
+
+  const currentPlayer = getRuntimeState().currentPlayer;
+  const base = import.meta.env.BASE_URL;
+  const resolvePath = (p: string): string => {
+    const path = p.startsWith('/') ? p.slice(1) : p;
+    const baseUrl = base === '/' ? window.location.origin + '/' : window.location.origin + base;
+    return new URL(path, baseUrl).href;
+  };
+
+  if (indicatorEl.classList.contains('game__player-indicator--label')) {
+    const iconPath = currentPlayer === 'blue' ? '/assets/icons/label-blue.svg' : '/assets/icons/label-orange.svg';
+    iconEl.src = resolvePath(iconPath);
+  } else {
+    document.documentElement.style.setProperty('--player-indicator-bg', PLAYER_COLORS[currentPlayer]);
   }
 }
 
@@ -171,6 +220,170 @@ function applyScoreDisplayTheme(theme: Theme | undefined): void {
   } else {
     if (iconBlue) iconBlue.src = resolvePath('/assets/icons/figure-blue.svg');
     if (iconOrange) iconOrange.src = resolvePath('/assets/icons/figure-orange.svg');
+  }
+}
+
+/** Grid-Konfiguration je nach Brettgröße: 16→4×4, 24→6×4, 36→6×6 */
+const BOARD_GRID: Record<string, { cols: number; rows: number }> = {
+  '16': { cols: 4, rows: 4 },
+  '24': { cols: 6, rows: 4 },
+  '36': { cols: 6, rows: 6 },
+};
+
+/** Wendet das Theme-Styling auf das Spielbrett an (Grid, Gap) */
+function applyBoardTheme(theme: Theme | undefined): void {
+  const grid = BOARD_GRID[getSettings().boardSize] ?? BOARD_GRID['16'];
+  document.documentElement.style.setProperty('--board-columns', `repeat(${grid.cols}, auto)`);
+  document.documentElement.style.setProperty('--board-rows', `repeat(${grid.rows}, auto)`);
+  document.documentElement.style.setProperty('--board-gap', theme?.boardGap ?? '6px');
+}
+
+/** Erzeugt den Karten-Dateinamen für einen Index (0 = base.png, 1 = base (1).png) */
+function getCardFileName(baseName: string, index: number): string {
+  return index === 0 ? `${baseName}.png` : `${baseName} (${index}).png`;
+}
+
+/** Rendert das Memory-Spielfeld mit gemischten Karten */
+function renderGameBoard(): void {
+  const boardEl = document.getElementById('game-board');
+  const theme = getThemeById(getSettings().theme);
+  if (!boardEl || !theme?.cardsPath || !theme.cardBaseName || !theme.backsitePath) return;
+
+  const boardSize = getSettings().boardSize;
+  const pairCount = parseInt(boardSize, 10) / 2;
+  const baseName = theme.cardBaseName;
+
+  const base = import.meta.env.BASE_URL;
+  const resolvePath = (p: string): string => {
+    const path = p.startsWith('/') ? p.slice(1) : p;
+    const baseUrl = base === '/' ? window.location.origin + '/' : window.location.origin + base;
+    return new URL(path, baseUrl).href;
+  };
+
+  const cardIndices: number[] = [];
+  for (let i = 0; i < pairCount; i++) {
+    cardIndices.push(i, i);
+  }
+  for (let i = cardIndices.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [cardIndices[i], cardIndices[j]] = [cardIndices[j], cardIndices[i]];
+  }
+
+  const backsiteUrl = resolvePath(theme.backsitePath);
+  const cardsPath = theme.cardsPath.endsWith('/') ? theme.cardsPath : theme.cardsPath + '/';
+
+  boardEl.innerHTML = '';
+  cardIndices.forEach((index, i) => {
+    const card = document.createElement('button');
+    card.type = 'button';
+    card.className = 'game__card';
+    card.dataset.index = String(i);
+    card.dataset.pairId = String(index);
+
+    const inner = document.createElement('span');
+    inner.className = 'game__card-inner';
+
+    const faceBack = document.createElement('span');
+    faceBack.className = 'game__card-face game__card-face--back';
+    const imgBack = document.createElement('img');
+    imgBack.src = backsiteUrl;
+    imgBack.alt = '';
+    imgBack.setAttribute('aria-hidden', 'true');
+    faceBack.appendChild(imgBack);
+
+    const faceFront = document.createElement('span');
+    faceFront.className = 'game__card-face game__card-face--front';
+    const imgFront = document.createElement('img');
+    imgFront.src = resolvePath(cardsPath + getCardFileName(baseName, index));
+    imgFront.alt = '';
+    imgFront.setAttribute('aria-hidden', 'true');
+    faceFront.appendChild(imgFront);
+
+    inner.appendChild(faceBack);
+    inner.appendChild(faceFront);
+    card.appendChild(inner);
+    boardEl.appendChild(card);
+  });
+}
+
+/** Karte umdrehen (Rückseite → Vorderseite) */
+function flipCard(cardEl: HTMLButtonElement): void {
+  cardEl.classList.add('game__card--flipped');
+}
+
+/** Karte wieder zudecken (Vorderseite → Rückseite) */
+function unflipCard(cardEl: HTMLButtonElement): void {
+  cardEl.classList.remove('game__card--flipped');
+}
+
+/** Zeigt die Game-Over-Seite mit Gewinner und Punktestand */
+function showGameOver(): void {
+  const { scoreBlue, scoreOrange } = getRuntimeState();
+  const winnerEl = document.querySelector<HTMLElement>('.game-over__winner');
+  const scoreEl = document.querySelector<HTMLElement>('.game-over__score');
+
+  let winnerText: string;
+  if (scoreBlue > scoreOrange) {
+    winnerText = 'Blue gewinnt!';
+  } else if (scoreOrange > scoreBlue) {
+    winnerText = 'Orange gewinnt!';
+  } else {
+    winnerText = 'Unentschieden!';
+  }
+
+  if (winnerEl) winnerEl.textContent = `Gewinner: ${winnerText}`;
+  if (scoreEl) scoreEl.textContent = `Punktestand: ${scoreBlue} – ${scoreOrange}`;
+
+  showPage('game-over');
+}
+
+/** Behandelt Klick auf eine Karte */
+function handleCardClick(e: Event): void {
+  const card = (e.target as HTMLElement).closest<HTMLButtonElement>('.game__card');
+  if (!card) return;
+
+  const index = parseInt(card.dataset.index ?? '-1', 10);
+  const pairId = parseInt(card.dataset.pairId ?? '-1', 10);
+  if (index < 0) return;
+
+  const state = getRuntimeState();
+  if (state.isLocked) return;
+  if (state.matchedPairIds.has(pairId)) return;
+  if (state.flippedIndices.includes(index)) return;
+  if (state.flippedIndices.length >= 2) return;
+
+  flipCard(card);
+  addFlippedIndex(index);
+
+  const newState = getRuntimeState();
+  if (newState.flippedIndices.length === 2) {
+    setLocked(true);
+    const [idx0, idx1] = newState.flippedIndices;
+    const card0 = document.querySelector<HTMLButtonElement>(`[data-index="${idx0}"]`);
+    const card1 = document.querySelector<HTMLButtonElement>(`[data-index="${idx1}"]`);
+    const pairId0 = parseInt(card0?.dataset.pairId ?? '-1', 10);
+    const pairId1 = parseInt(card1?.dataset.pairId ?? '-1', 10);
+
+    if (pairId0 === pairId1) {
+      addScore(newState.currentPlayer);
+      addMatchedPair(pairId0);
+      clearFlippedIndices();
+      setLocked(false);
+      updateScoreDisplay();
+
+      if (areAllPairsMatched()) {
+        showGameOver();
+      }
+    } else {
+      setTimeout(() => {
+        if (card0) unflipCard(card0);
+        if (card1) unflipCard(card1);
+        clearFlippedIndices();
+        switchPlayer();
+        updateCurrentPlayerIndicator();
+        setLocked(false);
+      }, 800);
+    }
   }
 }
 
@@ -264,6 +477,12 @@ function readSettingsFromForm(): void {
 // Event-Listener
 // ============================================
 
+/** Event-Delegation für Karten-Klicks (einmalig beim Start) */
+function setupGameBoardListeners(): void {
+  const boardEl = document.getElementById('game-board');
+  boardEl?.addEventListener('click', handleCardClick);
+}
+
 function setupNavigation(): void {
   const btnStart = document.getElementById('btn-start');
   const btnStartGame = document.getElementById('btn-start-game');
@@ -277,6 +496,7 @@ function setupNavigation(): void {
   if (btnStartGame) {
     btnStartGame.addEventListener('click', () => {
       readSettingsFromForm();
+      resetRuntimeState();
       showPage('game');
     });
   }
@@ -337,6 +557,7 @@ function setupStartBarUpdates(): void {
 
 document.addEventListener('DOMContentLoaded', () => {
   setupNavigation();
+  setupGameBoardListeners();
   setupSettingsThemeHover();
   setupSettingsThemeChange();
   setupStartBarUpdates();
