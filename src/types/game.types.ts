@@ -105,4 +105,47 @@ export interface Theme {
     image1: string;
     image2: string;
   };
+  /** Exit-Bestätigungs-Modal: Styling für Titeltext und Buttons */
+  exitConfirmModal?: {
+    background?: string;
+    borderRadius?: string;
+    textAlign?: 'left' | 'center';
+    textMaxWidth?: string;
+    /** Animation beim Erscheinen: 'move-in-top' | 'move-in-bottom' | 'dissolve' */
+    animation?: 'move-in-top' | 'move-in-bottom' | 'dissolve';
+    animationDuration?: string;
+    animationTimingFunction?: string;
+    fontFamily: string;
+    fontWeight: number;
+    fontSize: string;
+    color: string;
+    /** Linker Button: "Back to game" / "No, back to game" */
+    cancelButton?: {
+      text: string;
+      gap?: string;
+      padding?: string;
+      background?: string;
+      border?: string;
+      borderRadius?: string;
+      boxShadow?: string;
+      fontFamily: string;
+      fontWeight: number;
+      fontSize: string;
+      color: string;
+    };
+    /** Rechter Button: "Exit Game" / "Yes, quit game" */
+    confirmButton?: {
+      text: string;
+      gap?: string;
+      padding?: string;
+      background?: string;
+      border?: string;
+      borderRadius?: string;
+      boxShadow?: string;
+      fontFamily: string;
+      fontWeight: number;
+      fontSize: string;
+      color: string;
+    };
+  };
 }

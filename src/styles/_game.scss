@@ -251,3 +251,137 @@
   inset: 0;
   transform: rotateY(180deg);
 }
+
+/* Exit-Bestätigungs-Modal */
+@keyframes exit-move-in-top {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes exit-move-in-bottom {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes exit-dissolve {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.exit-confirm {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-lg;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+
+  &--visible {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.exit-confirm__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+.exit-confirm__dialog {
+  position: relative;
+  width: fit-content;
+  max-width: calc(100vw - 2 * #{$spacing-lg});
+  background: var(--exit-confirm-bg, #FFFFFF);
+  border-radius: var(--exit-confirm-radius, 0);
+  padding: 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.exit-confirm--visible .exit-confirm__dialog {
+  animation: var(--exit-confirm-animation, none) var(--exit-confirm-animation-duration, 300ms) var(--exit-confirm-animation-timing, ease-out) forwards;
+}
+
+.exit-confirm__text {
+  margin: 0 0 $spacing-lg;
+  max-width: var(--exit-confirm-text-max-width, none);
+  font-family: var(--exit-confirm-font-family, 'Red Rose');
+  font-weight: var(--exit-confirm-font-weight, 700);
+  font-size: var(--exit-confirm-font-size, 20px);
+  color: var(--exit-confirm-color, #303131);
+  text-align: var(--exit-confirm-text-align, left);
+  line-height: 1.4;
+}
+
+.exit-confirm__actions {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: nowrap;
+}
+
+.exit-confirm__btn {
+  flex: 0 0 auto;
+  min-width: 120px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.9;
+  }
+
+  &--cancel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--exit-cancel-gap, 0);
+    padding: var(--exit-cancel-padding, 12px 20px);
+    white-space: nowrap;
+    background: var(--exit-cancel-bg, #e5e7eb);
+    border: var(--exit-cancel-border, none);
+    border-radius: var(--exit-cancel-radius, 8px);
+    box-shadow: var(--exit-cancel-shadow, none);
+    font-family: var(--exit-cancel-font-family, inherit);
+    font-weight: var(--exit-cancel-font-weight, 700);
+    font-size: var(--exit-cancel-font-size, 16px);
+    color: var(--exit-cancel-color, #374151);
+  }
+
+  &--confirm {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--exit-confirm-btn-gap, 0);
+    padding: var(--exit-confirm-btn-padding, 12px 20px);
+    white-space: nowrap;
+    background: var(--exit-confirm-btn-bg, #ef4444);
+    border: var(--exit-confirm-btn-border, none);
+    border-radius: var(--exit-confirm-btn-radius, 8px);
+    box-shadow: var(--exit-confirm-btn-shadow, none);
+    font-family: var(--exit-confirm-btn-font-family, inherit);
+    font-weight: var(--exit-confirm-btn-font-weight, 700);
+    font-size: var(--exit-confirm-btn-font-size, 16px);
+    color: var(--exit-confirm-btn-color, #ffffff);
+  }
+}

@@ -206,6 +206,18 @@
             <div id="game-board" class="game__board">
                 <!-- Spielfeld wird dynamisch befüllt -->
             </div>
+
+            <!-- Exit-Bestätigungs-Modal -->
+            <div id="exit-confirm-modal" class="exit-confirm" aria-hidden="true">
+                <div class="exit-confirm__backdrop"></div>
+                <div class="exit-confirm__dialog">
+                    <p class="exit-confirm__text">Are you sure you want to quit the game?</p>
+                    <div class="exit-confirm__actions">
+                        <button type="button" id="btn-exit-cancel" class="exit-confirm__btn exit-confirm__btn--cancel">No, back to Game</button>
+                        <button type="button" id="btn-exit-confirm" class="exit-confirm__btn exit-confirm__btn--confirm">Exit Game</button>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <!-- Spielende -->

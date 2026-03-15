@@ -47,6 +47,7 @@ function applyPageBackground(pageId: PageId): void {
     applyPlayerIndicatorTheme(theme);
     applyScoreDisplayTheme(theme);
     applyBoardTheme(theme);
+    applyExitConfirmModalTheme(theme);
     if (pageId === 'game') {
       renderGameBoard();
       updateScoreDisplay();
@@ -220,6 +221,74 @@ function applyScoreDisplayTheme(theme: Theme | undefined): void {
   } else {
     if (iconBlue) iconBlue.src = resolvePath('/assets/icons/figure-blue.svg');
     if (iconOrange) iconOrange.src = resolvePath('/assets/icons/figure-orange.svg');
+  }
+}
+
+/** Wendet das Theme-Styling auf das Exit-Bestätigungs-Modal an (Titeltext + Buttons) */
+function applyExitConfirmModalTheme(theme: Theme | undefined): void {
+  const modal = theme?.exitConfirmModal;
+  if (!modal) return;
+
+  document.documentElement.style.setProperty('--exit-confirm-bg', modal.background ?? '#FFFFFF');
+  document.documentElement.style.setProperty('--exit-confirm-radius', modal.borderRadius ?? '0');
+  document.documentElement.style.setProperty('--exit-confirm-text-align', modal.textAlign ?? 'left');
+  document.documentElement.style.setProperty('--exit-confirm-text-max-width', modal.textMaxWidth ?? 'none');
+  document.documentElement.style.setProperty('--exit-confirm-animation', modal.animation ? `exit-${modal.animation}` : 'none');
+  document.documentElement.style.setProperty('--exit-confirm-animation-duration', modal.animationDuration ?? '300ms');
+  document.documentElement.style.setProperty('--exit-confirm-animation-timing', modal.animationTimingFunction ?? 'ease-out');
+  document.documentElement.style.setProperty('--exit-confirm-font-family', modal.fontFamily);
+  document.documentElement.style.setProperty('--exit-confirm-font-weight', String(modal.fontWeight));
+  document.documentElement.style.setProperty('--exit-confirm-font-size', modal.fontSize);
+  document.documentElement.style.setProperty('--exit-confirm-color', modal.color);
+
+  const cancel = modal.cancelButton;
+  const cancelBtn = document.getElementById('btn-exit-cancel');
+  if (cancel && cancelBtn) {
+    cancelBtn.textContent = cancel.text;
+    document.documentElement.style.setProperty('--exit-cancel-gap', cancel.gap ?? '0');
+    document.documentElement.style.setProperty('--exit-cancel-padding', cancel.padding ?? '12px 20px');
+    document.documentElement.style.setProperty('--exit-cancel-bg', cancel.background ?? '#e5e7eb');
+    document.documentElement.style.setProperty('--exit-cancel-border', cancel.border ?? 'none');
+    document.documentElement.style.setProperty('--exit-cancel-radius', cancel.borderRadius ?? '8px');
+    document.documentElement.style.setProperty('--exit-cancel-shadow', cancel.boxShadow ?? 'none');
+    document.documentElement.style.setProperty('--exit-cancel-font-family', cancel.fontFamily);
+    document.documentElement.style.setProperty('--exit-cancel-font-weight', String(cancel.fontWeight));
+    document.documentElement.style.setProperty('--exit-cancel-font-size', cancel.fontSize);
+    document.documentElement.style.setProperty('--exit-cancel-color', cancel.color);
+  }
+
+  const confirm = modal.confirmButton;
+  const confirmBtn = document.getElementById('btn-exit-confirm');
+  if (confirm && confirmBtn) {
+    confirmBtn.textContent = confirm.text;
+    document.documentElement.style.setProperty('--exit-confirm-btn-gap', confirm.gap ?? '0');
+    document.documentElement.style.setProperty('--exit-confirm-btn-padding', confirm.padding ?? '12px 20px');
+    document.documentElement.style.setProperty('--exit-confirm-btn-bg', confirm.background ?? '#ef4444');
+    document.documentElement.style.setProperty('--exit-confirm-btn-border', confirm.border ?? 'none');
+    document.documentElement.style.setProperty('--exit-confirm-btn-radius', confirm.borderRadius ?? '8px');
+    document.documentElement.style.setProperty('--exit-confirm-btn-shadow', confirm.boxShadow ?? 'none');
+    document.documentElement.style.setProperty('--exit-confirm-btn-font-family', confirm.fontFamily);
+    document.documentElement.style.setProperty('--exit-confirm-btn-font-weight', String(confirm.fontWeight));
+    document.documentElement.style.setProperty('--exit-confirm-btn-font-size', confirm.fontSize);
+    document.documentElement.style.setProperty('--exit-confirm-btn-color', confirm.color);
+  }
+}
+
+/** Zeigt das Exit-Bestätigungs-Modal an */
+function showExitConfirmModal(): void {
+  const modal = document.getElementById('exit-confirm-modal');
+  if (modal) {
+    modal.classList.add('exit-confirm--visible');
+    modal.setAttribute('aria-hidden', 'false');
+  }
+}
+
+/** Blendet das Exit-Bestätigungs-Modal aus */
+function hideExitConfirmModal(): void {
+  const modal = document.getElementById('exit-confirm-modal');
+  if (modal) {
+    modal.classList.remove('exit-confirm--visible');
+    modal.setAttribute('aria-hidden', 'true');
   }
 }
 
@@ -502,7 +571,24 @@ function setupNavigation(): void {
   }
 
   if (btnExitGame) {
-    btnExitGame.addEventListener('click', () => showPage('home'));
+    btnExitGame.addEventListener('click', showExitConfirmModal);
+  }
+
+  const btnExitCancel = document.getElementById('btn-exit-cancel');
+  const btnExitConfirm = document.getElementById('btn-exit-confirm');
+  if (btnExitCancel) {
+    btnExitCancel.addEventListener('click', hideExitConfirmModal);
+  }
+  if (btnExitConfirm) {
+    btnExitConfirm.addEventListener('click', () => {
+      hideExitConfirmModal();
+      showPage('home');
+    });
+  }
+
+  const exitModalBackdrop = document.querySelector('.exit-confirm__backdrop');
+  if (exitModalBackdrop) {
+    exitModalBackdrop.addEventListener('click', hideExitConfirmModal);
   }
 
   if (btnHome) {
