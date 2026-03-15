@@ -3,7 +3,13 @@
  * Jedes Theme hat Farben und Preview-Bilder für die Settings-Vorschau.
  */
 
-import type { Theme } from '../types/game.types';
+import type { Theme, PlayerColor } from '../types/game.types';
+
+/** Spielerfarben für Blue/Orange (Hintergrund des Indikators) */
+export const PLAYER_COLORS: Record<PlayerColor, string> = {
+  blue: '#2BB1FF',
+  orange: '#F58E39',
+};
 
 export const THEMES: Theme[] = [
   {
@@ -26,6 +32,26 @@ export const THEMES: Theme[] = [
         border: '1px solid #4DD5BC',
         boxShadow: '0 0 0 2px #4DD5BC, 4px 4px 6px 0px #4DD5BC33',
       },
+    },
+    currentPlayer: {
+      fontFamily: 'Red Rose',
+      fontWeight: 400,
+      fontSize: '26px',
+      color: '#FFFFFF',
+    },
+    playerIndicator: { type: 'label' },
+    scoreDisplay: {
+      type: 'label',
+      background: '#86E9D633',
+      gap: '20px',
+      padding: '17px 20px',
+      itemGap: '4px',
+      order: 'blue-first',
+      fontFamily: 'Red Rose',
+      fontWeight: 700,
+      fontSize: '24px',
+      colorBlue: '#2BB1FF',
+      colorOrange: '#F58E39',
     },
     colors: {
       primary: '#2dd4bf',
@@ -62,6 +88,31 @@ export const THEMES: Theme[] = [
         iconHover: '/assets/themes/gaming/icons/exit-hover.svg',
       },
     },
+    currentPlayer: {
+      fontFamily: 'Orbitron',
+      fontWeight: 700,
+      fontSize: '32px',
+      color: '#FFFFFF',
+    },
+    playerIndicator: {
+      type: 'figure',
+      borderRadius: '3px',
+      padding: '4px 8px',
+    },
+    scoreDisplay: {
+      type: 'figure',
+      background: '#FFFFFF',
+      gap: '40px',
+      padding: '16px',
+      borderRadius: '10px',
+      itemGap: '8px',
+      order: 'orange-first',
+      fontFamily: 'Orbitron',
+      fontWeight: 700,
+      fontSize: '30px',
+      colorBlue: '#097FC5',
+      colorOrange: '#EA6900',
+    },
     colors: {
       primary: '#6366f1',
       secondary: '#ec4899',
@@ -95,6 +146,31 @@ export const THEMES: Theme[] = [
         color: '#FFFFFF',
         iconHover: '/assets/themes/da-projects/icons/exit-hover.svg',
       },
+    },
+    currentPlayer: {
+      fontFamily: 'Figtree',
+      fontWeight: 700,
+      fontSize: '32px',
+      color: '#1E7594',
+    },
+    playerIndicator: {
+      type: 'figure',
+      borderRadius: '8px',
+      padding: '4px 8px',
+    },
+    scoreDisplay: {
+      type: 'figure',
+      background: '#FFFFFF',
+      gap: '40px',
+      padding: '16px',
+      borderRadius: '10px',
+      itemGap: '4px',
+      order: 'orange-first',
+      fontFamily: 'Figtree',
+      fontWeight: 700,
+      fontSize: '30px',
+      colorBlue: '#097FC5',
+      colorOrange: '#EA6900',
     },
     colors: {
       primary: '#3b82f6',
@@ -130,6 +206,31 @@ export const THEMES: Theme[] = [
         color: '#FFFFFF',
         iconHover: '/assets/themes/foods/icons/exit-hover.svg',
       },
+    },
+    currentPlayer: {
+      fontFamily: 'Klee One',
+      fontWeight: 600,
+      fontSize: '32px',
+      color: '#A45212',
+    },
+    playerIndicator: {
+      type: 'figure',
+      borderRadius: '8px',
+      padding: '4px 8px',
+    },
+    scoreDisplay: {
+      type: 'figure',
+      background: '#FFFFFF',
+      gap: '40px',
+      padding: '16px',
+      borderRadius: '10px',
+      itemGap: '4px',
+      order: 'orange-first',
+      fontFamily: 'Klee One',
+      fontWeight: 700,
+      fontSize: '30px',
+      colorBlue: '#097FC5',
+      colorOrange: '#EA6900',
     },
     colors: {
       primary: '#f59e0b',

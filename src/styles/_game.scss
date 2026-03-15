@@ -14,6 +14,109 @@
   border-radius: 8px;
 }
 
+.game__score {
+  display: flex;
+  align-items: center;
+  gap: var(--score-display-gap, 20px);
+  padding: var(--score-display-padding, 17px 20px);
+  background: var(--score-display-bg, transparent);
+  border-radius: var(--score-display-border-radius, 0);
+
+  &--label {
+    .game__score-label {
+      display: inline;
+    }
+    .game__score-icon--blue,
+    .game__score-icon--orange {
+      width: 24px;
+      height: 20px;
+      object-fit: contain;
+    }
+  }
+
+  &--figure {
+    .game__score-label {
+      display: none;
+    }
+    .game__score-icon--blue,
+    .game__score-icon--orange {
+      width: 20px;
+      height: 25px;
+      object-fit: contain;
+    }
+  }
+}
+
+.game__score-item {
+  display: flex;
+  align-items: center;
+  gap: var(--score-item-gap, 4px);
+
+  &--blue {
+    order: var(--score-order-blue, 1);
+
+    .game__score-label,
+    .game__score-value {
+      color: var(--score-color-blue, #2BB1FF);
+    }
+  }
+
+  &--orange {
+    order: var(--score-order-orange, 2);
+
+    .game__score-label,
+    .game__score-value {
+      color: var(--score-color-orange, #F58E39);
+    }
+  }
+}
+
+.game__score-label,
+.game__score-value {
+  font-family: var(--score-font-family, 'Red Rose');
+  font-weight: var(--score-font-weight, 700);
+  font-size: var(--score-font-size, 24px);
+}
+
+.game__player-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.game__player {
+  font-family: var(--current-player-font-family, 'Red Rose');
+  font-weight: var(--current-player-font-weight, 400);
+  font-size: var(--current-player-font-size, 26px);
+  color: var(--current-player-color, #ffffff);
+}
+
+.game__player-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &--label {
+    .game__player-icon {
+      width: 29px;
+      height: 24px;
+      object-fit: contain;
+    }
+  }
+
+  &--figure {
+    border-radius: var(--player-indicator-border-radius, 8px);
+    padding: var(--player-indicator-padding, 4px 8px);
+    background-color: var(--player-indicator-bg, #2BB1FF);
+
+    .game__player-icon {
+      width: 25px;
+      height: 32px;
+      object-fit: contain;
+    }
+  }
+}
+
 .game__exit-btn {
   display: flex;
   align-items: center;

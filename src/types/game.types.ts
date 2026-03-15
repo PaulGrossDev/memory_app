@@ -51,6 +51,38 @@ export interface Theme {
       iconHover?: string;
     };
   };
+  /** "Current player:" Anzeige im Spiel-Header – pro Theme unterschiedlich */
+  currentPlayer?: {
+    fontFamily: string;
+    fontWeight: number;
+    fontSize: string;
+    color: string;
+  };
+  /** Spieler-Indikator neben "Current player:" – Code vibes: label ohne BG, Rest: figure-white mit BG */
+  playerIndicator?: {
+    type: 'label' | 'figure';
+    /** Nur bei figure: border-radius, padding */
+    borderRadius?: string;
+    padding?: string;
+  };
+  /** Punktestand-Anzeige links im Header */
+  scoreDisplay?: {
+    type: 'label' | 'figure';
+    /** label: Blue/Orange Text sichtbar, figure: nur Icon+Zahl */
+    background?: string;
+    gap?: string;
+    padding?: string;
+    borderRadius?: string;
+    /** Gap zwischen Icon/Label und Zahl innerhalb eines Items */
+    itemGap?: string;
+    /** Reihenfolge: 'blue-first' | 'orange-first' */
+    order?: 'blue-first' | 'orange-first';
+    fontFamily?: string;
+    fontWeight?: number;
+    fontSize?: string;
+    colorBlue?: string;
+    colorOrange?: string;
+  };
   /** Farben für das Theme (Hintergrund, Karten, Akzente) */
   colors: {
     primary: string;

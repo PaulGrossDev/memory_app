@@ -5,7 +5,7 @@
 
 import './styles/main.scss';
 import { getSettings, setSettings } from './state/gameState';
-import { THEMES, getThemeById } from './data/themes';
+import { THEMES, getThemeById, PLAYER_COLORS } from './data/themes';
 import type { ThemeId, Theme } from './types/game.types';
 
 // ============================================
@@ -31,6 +31,9 @@ function applyPageBackground(pageId: PageId): void {
     bgColor = theme?.pageBackground ?? '#303131';
     headerBg = theme?.headerBackground ?? 'transparent';
     applyExitButtonTheme(theme);
+    applyCurrentPlayerTheme(theme);
+    applyPlayerIndicatorTheme(theme);
+    applyScoreDisplayTheme(theme);
   } else {
     bgColor = '#303131';
     headerBg = 'transparent';
@@ -78,6 +81,96 @@ function applyExitButtonTheme(theme: { exitButton: Theme['exitButton'] } | undef
     const hoverPath = hover?.iconHover ?? iconPath;
     iconHover.src = resolvePath(hoverPath);
     iconHover.alt = '';
+  }
+}
+
+/** Wendet das Theme-Styling auf die "Current player:" Anzeige an */
+function applyCurrentPlayerTheme(theme: Theme | undefined): void {
+  const cp = theme?.currentPlayer;
+  if (!cp) return;
+
+  document.documentElement.style.setProperty('--current-player-font-family', cp.fontFamily);
+  document.documentElement.style.setProperty('--current-player-font-weight', String(cp.fontWeight));
+  document.documentElement.style.setProperty('--current-player-font-size', cp.fontSize);
+  document.documentElement.style.setProperty('--current-player-color', cp.color);
+}
+
+/** Wendet das Theme-Styling auf den Spieler-Indikator an (label oder figure mit BG) */
+function applyPlayerIndicatorTheme(theme: Theme | undefined): void {
+  const indicator = theme?.playerIndicator;
+  const indicatorEl = document.getElementById('game-player-indicator');
+  const iconEl = indicatorEl?.querySelector<HTMLImageElement>('.game__player-icon');
+  if (!indicator || !indicatorEl || !iconEl) return;
+
+  const playerColor = getSettings().playerColor;
+  const base = import.meta.env.BASE_URL;
+  const resolvePath = (p: string): string => {
+    const path = p.startsWith('/') ? p.slice(1) : p;
+    const baseUrl = base === '/' ? window.location.origin + '/' : window.location.origin + base;
+    return new URL(path, baseUrl).href;
+  };
+
+  indicatorEl.classList.remove('game__player-indicator--label', 'game__player-indicator--figure');
+
+  if (indicator.type === 'label') {
+    indicatorEl.classList.add('game__player-indicator--label');
+    const iconPath = playerColor === 'blue' ? '/assets/icons/label-blue.svg' : '/assets/icons/label-orange.svg';
+    iconEl.src = resolvePath(iconPath);
+    document.documentElement.style.removeProperty('--player-indicator-bg');
+    document.documentElement.style.removeProperty('--player-indicator-border-radius');
+    document.documentElement.style.removeProperty('--player-indicator-padding');
+  } else {
+    indicatorEl.classList.add('game__player-indicator--figure');
+    iconEl.src = resolvePath('/assets/icons/figure-white.svg');
+    document.documentElement.style.setProperty('--player-indicator-bg', PLAYER_COLORS[playerColor]);
+    document.documentElement.style.setProperty('--player-indicator-border-radius', indicator.borderRadius ?? '8px');
+    document.documentElement.style.setProperty('--player-indicator-padding', indicator.padding ?? '4px 8px');
+  }
+}
+
+/** Wendet das Theme-Styling auf die Punktestand-Anzeige an */
+function applyScoreDisplayTheme(theme: Theme | undefined): void {
+  const score = theme?.scoreDisplay;
+  const scoreEl = document.getElementById('game-score');
+  const iconBlue = scoreEl?.querySelector<HTMLImageElement>('.game__score-icon--blue');
+  const iconOrange = scoreEl?.querySelector<HTMLImageElement>('.game__score-icon--orange');
+  if (!score || !scoreEl) return;
+
+  const base = import.meta.env.BASE_URL;
+  const resolvePath = (p: string): string => {
+    const path = p.startsWith('/') ? p.slice(1) : p;
+    const baseUrl = base === '/' ? window.location.origin + '/' : window.location.origin + base;
+    return new URL(path, baseUrl).href;
+  };
+
+  scoreEl.classList.remove('game__score--label', 'game__score--figure');
+  scoreEl.classList.add(score.type === 'label' ? 'game__score--label' : 'game__score--figure');
+
+  document.documentElement.style.setProperty('--score-display-bg', score.background ?? 'transparent');
+  document.documentElement.style.setProperty('--score-display-gap', score.gap ?? '20px');
+  document.documentElement.style.setProperty('--score-display-padding', score.padding ?? '17px 20px');
+  document.documentElement.style.setProperty('--score-display-border-radius', score.borderRadius ?? '0');
+  document.documentElement.style.setProperty('--score-item-gap', score.itemGap ?? '4px');
+  document.documentElement.style.setProperty('--score-font-family', score.fontFamily ?? 'Red Rose');
+  document.documentElement.style.setProperty('--score-font-weight', String(score.fontWeight ?? 700));
+  document.documentElement.style.setProperty('--score-font-size', score.fontSize ?? '24px');
+  document.documentElement.style.setProperty('--score-color-blue', score.colorBlue ?? '#2BB1FF');
+  document.documentElement.style.setProperty('--score-color-orange', score.colorOrange ?? '#F58E39');
+
+  if (score.order === 'orange-first') {
+    document.documentElement.style.setProperty('--score-order-blue', '2');
+    document.documentElement.style.setProperty('--score-order-orange', '1');
+  } else {
+    document.documentElement.style.setProperty('--score-order-blue', '1');
+    document.documentElement.style.setProperty('--score-order-orange', '2');
+  }
+
+  if (score.type === 'label') {
+    if (iconBlue) iconBlue.src = resolvePath('/assets/icons/label-blue.svg');
+    if (iconOrange) iconOrange.src = resolvePath('/assets/icons/label-orange.svg');
+  } else {
+    if (iconBlue) iconBlue.src = resolvePath('/assets/icons/figure-blue.svg');
+    if (iconOrange) iconOrange.src = resolvePath('/assets/icons/figure-orange.svg');
   }
 }
 
