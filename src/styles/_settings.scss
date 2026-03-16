@@ -302,10 +302,14 @@
   background-color: $color-accent;
   border: none;
   cursor: pointer;
-  transition: opacity $transition-fast;
+  transition: transform $transition-normal;
 
   &:hover {
-    opacity: 0.9;
+    transform: scale(1.2);
+
+    .settings__start-btn-icon {
+      transform: rotate(-20deg);
+    }
   }
 }
 
@@ -313,6 +317,7 @@
   width: 20px;
   height: 16px;
   object-fit: contain;
+  transition: transform $transition-normal;
 }
 
 .settings__start-btn-text {
