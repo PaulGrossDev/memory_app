@@ -136,14 +136,18 @@ export function showGameOver(): void {
     const winnerPage = document.getElementById('winner');
     if (!app || !gameOverPage || !winnerPage) return;
 
+    const themeId = getSettings().theme;
+
     applyPageBackground('winner');
     winnerPage.classList.add('page--visible');
     app.classList.add('page--game-over-to-winner');
+    app.dataset.transitionTheme = themeId;
     document.documentElement.classList.add('page--game-over-to-winner');
     document.body.classList.add('page--game-over-to-winner');
 
     window.setTimeout(() => {
       app.classList.remove('page--game-over-to-winner');
+      delete app.dataset.transitionTheme;
       document.documentElement.classList.remove('page--game-over-to-winner');
       document.body.classList.remove('page--game-over-to-winner');
       gameOverPage.classList.remove('page--visible');

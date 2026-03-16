@@ -6,22 +6,49 @@
 
 $transition-game-over-winner: 500ms;
 
+/* Code vibes: game-over nach oben, winner von unten */
 @keyframes page-slide-out-up {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(-100%);
-  }
+  from { transform: translateY(0); }
+  to { transform: translateY(-100%); }
 }
 
 @keyframes page-slide-in-from-bottom {
-  from {
-    transform: translateY(100%);
-  }
-  to {
-    transform: translateY(0);
-  }
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+/* Gaming: game-over nach unten, winner von oben */
+@keyframes page-slide-out-down {
+  from { transform: translateY(0); }
+  to { transform: translateY(100%); }
+}
+
+@keyframes page-slide-in-from-top {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
+/* DA Projects: horizontal – game-over nach links, winner von rechts */
+@keyframes page-slide-out-left {
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(-100%); opacity: 0.8; }
+}
+
+@keyframes page-slide-in-from-right {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+/* Foods: scale + fade – game-over schrumpft, winner poppt mit Bounce */
+@keyframes page-scale-out {
+  from { transform: scale(1); opacity: 1; }
+  to { transform: scale(0.85); opacity: 0; }
+}
+
+@keyframes page-scale-in-bounce {
+  0% { transform: scale(0.5); opacity: 0; }
+  70% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 /* Game-over → Winner Übergang: beide Seiten sichtbar, animiert */
@@ -50,15 +77,56 @@ body.page--game-over-to-winner {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    animation: page-slide-out-up $transition-game-over-winner ease-out forwards;
   }
 
   #winner {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    transform: translateY(100%);
-    animation: page-slide-in-from-bottom $transition-game-over-winner ease-out forwards;
+  }
+
+  /* Code vibes (default): game-over hoch, winner von unten */
+  &[data-transition-theme='code-vibes'] {
+    #game-over {
+      animation: page-slide-out-up $transition-game-over-winner ease-out forwards;
+    }
+    #winner {
+      transform: translateY(100%);
+      animation: page-slide-in-from-bottom $transition-game-over-winner ease-out forwards;
+    }
+  }
+
+  /* Gaming: game-over runter, winner von oben */
+  &[data-transition-theme='gaming'] {
+    #game-over {
+      animation: page-slide-out-down $transition-game-over-winner ease-out forwards;
+    }
+    #winner {
+      transform: translateY(-100%);
+      animation: page-slide-in-from-top $transition-game-over-winner ease-out forwards;
+    }
+  }
+
+  /* DA Projects: horizontal slide */
+  &[data-transition-theme='da-projects'] {
+    #game-over {
+      animation: page-slide-out-left $transition-game-over-winner ease-in-out forwards;
+    }
+    #winner {
+      transform: translateX(100%);
+      animation: page-slide-in-from-right $transition-game-over-winner ease-in-out forwards;
+    }
+  }
+
+  /* Foods: scale + bounce */
+  &[data-transition-theme='foods'] {
+    #game-over {
+      animation: page-scale-out $transition-game-over-winner ease-in forwards;
+    }
+    #winner {
+      transform: scale(0.5);
+      animation: page-scale-in-bounce $transition-game-over-winner cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
   }
 }
 
