@@ -1,8 +1,3 @@
-/**
- * SCSS-Variablen – zentrale Werte (Topic 07)
- */
-
-// Farben
 $color-bg: #303131;
 $color-text: #eaeaea;
 $color-primary: #4a90d9;
@@ -13,14 +8,12 @@ $color-dark: #303131;
 $color-accent: #F0EA6E;
 $color-bg-light: #F6F6F6;
 
-// Abstände
 $spacing-xs: 0.25rem;
 $spacing-sm: 0.5rem;
 $spacing-md: 1rem;
 $spacing-lg: 1.5rem;
 $spacing-xl: 2rem;
 
-// Schrift
 $font-family-base: system-ui, -apple-system, sans-serif;
 $font-red-rose: 'Red Rose', serif;
 $font-almarai: 'Almarai', sans-serif;
@@ -28,6 +21,5 @@ $font-size-base: 1rem;
 $font-size-lg: 1.25rem;
 $font-size-xl: 1.5rem;
 
-// Übergänge
 $transition-fast: 0.15s ease;
 $transition-normal: 0.3s ease;

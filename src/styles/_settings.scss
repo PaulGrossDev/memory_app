@@ -1,7 +1,3 @@
-/**
- * Einstellungsseite
- */
-
 @use 'variables' as *;
 @use 'mixins' as *;
 
@@ -59,10 +55,6 @@
   height: 539px;
   box-sizing: border-box;
 }
-
-// ============================================
-// Linke Spalte: Auswahloptionen
-// ============================================
 
 .settings__options {
   flex: 0 0 auto;
@@ -127,7 +119,6 @@
   pointer-events: none;
 }
 
-/* Kreis: Outline mit Punkt in der Mitte wenn ausgewählt (wie im Design) */
 .settings__radio-circle {
   width: 18px;
   height: 18px;
@@ -138,7 +129,6 @@
   position: relative;
   transition: border-color $transition-fast;
 
-  /* Punkt in der Mitte nur bei ausgewählter Option */
   &::after {
     content: '';
     display: none;
@@ -153,7 +143,6 @@
   }
 }
 
-/* Punkt im Kreis: nur bei Hover ODER bei Auswahl wenn nichts anderes gehovered wird */
 .settings__radio:hover .settings__radio-circle::after {
   display: block;
 }
@@ -162,7 +151,6 @@
   display: block;
 }
 
-/* Fett: nur bei Hover ODER bei Auswahl wenn nichts anderes gehovered wird */
 .settings__radio:hover .settings__radio-text {
   font-weight: 700;
 }
@@ -171,7 +159,6 @@
   font-weight: 700;
 }
 
-/* Line-Icon: 8px Abstand zum Text – bei Auswahl ODER Hover sichtbar (ohne Rotation) */
 .settings__radio-label {
   display: inline-flex;
   align-items: center;
@@ -187,7 +174,6 @@
   vertical-align: middle;
 }
 
-/* Line sichtbar: nur bei Hover ODER bei Auswahl wenn nichts anderes gehovered wird */
 .settings__radio:hover .settings__radio-line {
   display: inline-block;
 }
@@ -201,10 +187,6 @@
   color: $color-dark;
 }
 
-// ============================================
-// Rechte Spalte: Vorschau + Start-Bar
-// ============================================
-
 .settings__preview-column {
   flex: 1;
   min-width: 0;
@@ -214,7 +196,6 @@
   align-items: stretch;
 }
 
-// Theme-Vorschau (oben)
 .settings__preview {
   flex: 1;
   min-width: 0;
@@ -250,11 +231,6 @@
   }
 }
 
-// ============================================
-// Start-Container (Auswahl-Zusammenfassung + Start-Button)
-// ============================================
-
-// Start-Bar: unten rechts im Layout
 .settings__start-bar {
   position: absolute;
   bottom: 0;

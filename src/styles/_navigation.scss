@@ -1,12 +1,7 @@
-/**
- * Navigation – Seitenwechsel (BEM + Nesting, Topic 04, 06)
- */
-
 @use 'variables' as *;
 
 $transition-game-over-winner: 500ms;
 
-/* Code vibes: game-over nach oben, winner von unten */
 @keyframes page-slide-out-up {
   from { transform: translateY(0); }
   to { transform: translateY(-100%); }
@@ -28,7 +23,6 @@ $transition-game-over-winner: 500ms;
   to { transform: translateY(0); }
 }
 
-/* DA Projects: horizontal – game-over nach links, winner von rechts */
 @keyframes page-slide-out-left {
   from { transform: translateX(0); opacity: 1; }
   to { transform: translateX(-100%); opacity: 0.8; }
@@ -51,7 +45,6 @@ $transition-game-over-winner: 500ms;
   100% { transform: scale(1); opacity: 1; }
 }
 
-/* Game-over → Winner Übergang: beide Seiten sichtbar, animiert */
 html.page--game-over-to-winner,
 body.page--game-over-to-winner {
   overflow: hidden;
@@ -85,7 +78,6 @@ body.page--game-over-to-winner {
     align-items: center;
   }
 
-  /* Code vibes (default): game-over hoch, winner von unten */
   &[data-transition-theme='code-vibes'] {
     #game-over {
       animation: page-slide-out-up $transition-game-over-winner ease-out forwards;
@@ -107,7 +99,6 @@ body.page--game-over-to-winner {
     }
   }
 
-  /* DA Projects: horizontal slide */
   &[data-transition-theme='da-projects'] {
     #game-over {
       animation: page-slide-out-left $transition-game-over-winner ease-in-out forwards;
@@ -118,7 +109,6 @@ body.page--game-over-to-winner {
     }
   }
 
-  /* Foods: scale + bounce */
   &[data-transition-theme='foods'] {
     #game-over {
       animation: page-scale-out $transition-game-over-winner ease-in forwards;

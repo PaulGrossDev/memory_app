@@ -1,7 +1,3 @@
-/**
- * Navigation – Seitenwechsel, Modals, Event-Setup
- */
-
 import { getSettings } from '../state/gameState';
 import { getThemeById } from '../data/themes';
 import type { ThemeId } from '../types/game.types';
@@ -90,7 +86,6 @@ function applyPageBackground(pageId: PageId): void {
   document.documentElement.style.setProperty('--color-header-bg', headerBg);
 }
 
-/** Zeigt die gewünschte Seite an und blendet die anderen aus */
 export function showPage(pageId: PageId): void {
   const pages = document.querySelectorAll<HTMLElement>('.page');
   const targetPage = document.getElementById(pageId);
@@ -108,7 +103,6 @@ export function showPage(pageId: PageId): void {
   applyPageBackground(pageId);
 }
 
-/** Zeigt das Exit-Bestätigungs-Modal an */
 export function showExitConfirmModal(): void {
   const modal = document.getElementById('exit-confirm-modal');
   if (modal) {
@@ -117,7 +111,6 @@ export function showExitConfirmModal(): void {
   }
 }
 
-/** Blendet das Exit-Bestätigungs-Modal aus */
 export function hideExitConfirmModal(): void {
   const modal = document.getElementById('exit-confirm-modal');
   if (modal) {
@@ -129,7 +122,6 @@ export function hideExitConfirmModal(): void {
 const GAME_OVER_TO_WINNER_DELAY_MS = 1200;
 const GAME_OVER_TO_WINNER_ANIMATION_MS = 500;
 
-/** Zeigt die Game-Over-Seite und wechselt nach 1200ms mit Animation zur Winner-Page */
 export function showGameOver(): void {
   showPage('game-over');
   const timeoutId = window.setTimeout(() => {
@@ -158,13 +150,11 @@ export function showGameOver(): void {
   (window as unknown as { _gameOverTimeout?: number })._gameOverTimeout = timeoutId;
 }
 
-/** Event-Delegation für Karten-Klicks */
 export function setupGameBoardListeners(): void {
   const boardEl = document.getElementById('game-board');
   boardEl?.addEventListener('click', handleCardClick);
 }
 
-/** Shortcut: Ctrl+Shift+G springt zum Game-Over-Screen */
 export function setupGameOverShortcut(): void {
   document.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.shiftKey && e.key?.toLowerCase() === 'g') {
@@ -178,7 +168,6 @@ export function setupGameOverShortcut(): void {
   });
 }
 
-/** Navigation und Exit-Modal Event-Listener */
 export function setupNavigation(): void {
   const btnStart = document.getElementById('btn-start');
   const btnStartGame = document.getElementById('btn-start-game');

@@ -1,7 +1,3 @@
-/**
- * Button-Styles – wiederverwendbar
- */
-
 @use 'variables' as *;
 
 .btn {
@@ -12,22 +8,4 @@
   border-radius: 8px;
   cursor: pointer;
   transition: background-color $transition-fast;
-
-  &--primary {
-    background-color: $color-primary;
-    color: white;
-
-    &:hover {
-      background-color: $color-primary-hover;
-    }
-  }
-
-  &--secondary {
-    background-color: $color-secondary;
-    color: white;
-
-    &:hover {
-      opacity: 0.9;
-    }
-  }
 }

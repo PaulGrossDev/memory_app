@@ -1,7 +1,3 @@
-/**
- * Spielansicht
- */
-
 @use 'sass:list';
 @use 'variables' as *;
 @use 'mixins' as *;
@@ -167,9 +163,6 @@ $score-players: (
   opacity: 1;
 }
 
-.game__exit-text {
-  /* Text nutzt die CSS-Variablen vom Button */
-}
 
 .game__board {
   display: grid;
@@ -237,20 +230,17 @@ $score-players: (
   }
 }
 
-/* Back: in flow, legt Kartengröße fest */
 .game__card-face--back {
   position: relative;
   transform: rotateY(0deg);
 }
 
-/* Front: überlagert die Rückseite */
 .game__card-face--front {
   position: absolute;
   inset: 0;
   transform: rotateY(180deg);
 }
 
-/* Exit-Bestätigungs-Modal */
 @keyframes exit-move-in-top {
   from {
     transform: translateY(-100%);

@@ -1,11 +1,5 @@
-/**
- * Theme-Daten – alle 4 Figma-Designvorlagen
- * Jedes Theme hat Farben und Preview-Bilder für die Settings-Vorschau.
- */
-
 import type { Theme, PlayerColor } from '../types/game.types';
 
-/** Spielerfarben für Blue/Orange (Hintergrund des Indikators) */
 export const PLAYER_COLORS: Record<PlayerColor, string> = {
   blue: '#2BB1FF',
   orange: '#F58E39',
@@ -57,7 +51,6 @@ export const THEMES: Theme[] = [
     gameOverTitle: {
       type: 'svg-letters',
       iconsPath: '/assets/themes/code-vibes/icons/',
-      /** Mehrere drop-shadows: heller Schicht hinter den Buchstaben + Hauptglow */
       dropShadow: '-3px -3px 0 #A8F0E8, -7px 0px 8px #4DD5BC80',
     },
     headerBackground: 'transparent',
@@ -587,7 +580,6 @@ export const THEMES: Theme[] = [
   },
 ];
 
-/** Theme anhand der ID finden */
 export function getThemeById(themeId: string): Theme | undefined {
   return THEMES.find((t) => t.id === themeId);
 }

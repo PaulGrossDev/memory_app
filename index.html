@@ -10,7 +10,6 @@
 </head>
 <body>
     <div id="app">
-        <!-- Startseite / Homescreen -->
         <section id="home" class="page page--visible">
             <img src="/assets/icons/controller-bg.svg" alt="" class="home__controller-bg" aria-hidden="true">
             <div class="home__text">
@@ -24,7 +23,6 @@
             </button>
         </section>
 
-        <!-- Einstellungen -->
         <section id="settings" class="page settings">
             <div class="settings__wrapper">
                 <header class="settings__header">
@@ -34,7 +32,6 @@
                     </div>
                 </header>
                 <div class="settings__layout">
-                <!-- Linke Spalte: Auswahloptionen -->
                 <div class="settings__options">
                     <div class="settings__group">
                         <h3 class="settings__group-title">
@@ -136,7 +133,6 @@
                     </div>
                 </div>
 
-                <!-- Rechte Spalte: Theme-Vorschau -->
                 <div class="settings__preview-column">
                     <div class="settings__preview" id="settings-preview">
                         <div class="settings__preview-inner">
@@ -156,7 +152,6 @@
                     </div>
                 </div>
 
-                <!-- Start-Bar: unten rechts im Layout -->
                 <div class="settings__start-bar">
                     <span class="settings__start-summary">
                         <span class="settings__start-item" id="start-theme">Code vibes theme</span>
@@ -174,7 +169,6 @@
             </div>
         </section>
 
-        <!-- Spielansicht -->
         <section id="game" class="page">
             <div class="game__header">
                 <div class="game__score" id="game-score">
@@ -203,11 +197,8 @@
                     <span class="game__exit-text">Exit Game</span>
                 </button>
             </div>
-            <div id="game-board" class="game__board">
-                <!-- Spielfeld wird dynamisch befüllt -->
-            </div>
+            <div id="game-board" class="game__board"></div>
 
-            <!-- Exit-Bestätigungs-Modal -->
             <div id="exit-confirm-modal" class="exit-confirm" aria-hidden="true">
                 <div class="exit-confirm__backdrop"></div>
                 <div class="exit-confirm__dialog">
@@ -220,7 +211,6 @@
             </div>
         </section>
 
-        <!-- Spielende -->
         <section id="game-over" class="page game-over">
             <div class="game-over__top">
                 <div id="game-over-title" class="game-over__title"></div>
@@ -242,7 +232,6 @@
             </div>
         </section>
 
-        <!-- Gewinner-Anzeige -->
         <section id="winner" class="page winner">
             <div class="winner__content" id="winner-content">
                 <div class="winner__top">

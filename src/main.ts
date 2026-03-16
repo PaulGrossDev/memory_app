@@ -1,7 +1,3 @@
-/**
- * Memory-Spiel – Einstiegspunkt
- */
-
 import './styles/main.scss';
 import { getSettings } from './state/gameState';
 import {

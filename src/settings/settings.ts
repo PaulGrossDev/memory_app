@@ -1,12 +1,7 @@
-/**
- * Einstellungen – Theme-Vorschau, Start-Leiste, Formular
- */
-
 import { THEMES } from '../data/themes';
-import { getSettings, setSettings } from '../state/gameState';
+import { setSettings } from '../state/gameState';
 import type { ThemeId } from '../types/game.types';
 
-/** Zeigt die Theme-Vorschau für das angegebene Theme */
 export function showThemePreview(themeId: ThemeId): void {
   const panes = document.querySelectorAll<HTMLElement>('.settings__preview-pane');
   panes.forEach((pane) => {
@@ -15,13 +10,11 @@ export function showThemePreview(themeId: ThemeId): void {
   });
 }
 
-/** Theme-Anzeigename aus ID */
 export function getThemeDisplayName(themeId: ThemeId): string {
   const theme = THEMES.find((t) => t.id === themeId);
   return theme?.name ?? themeId;
 }
 
-/** Board-Size-Anzeige */
 export function getBoardSizeDisplay(boardSize: string): string {
   const map: Record<string, string> = {
     '16': '16 cards',
@@ -31,7 +24,6 @@ export function getBoardSizeDisplay(boardSize: string): string {
   return map[boardSize] ?? boardSize;
 }
 
-/** Aktualisiert die Start-Leiste mit den aktuellen Auswahlen */
 export function updateStartBar(): void {
   const themeRadio = document.querySelector<HTMLInputElement>('input[name="theme"]:checked');
   const playerRadio = document.querySelector<HTMLInputElement>('input[name="player"]:checked');
@@ -57,7 +49,6 @@ export function updateStartBar(): void {
   }
 }
 
-/** Liest die aktuell ausgewählten Settings aus dem Formular */
 export function readSettingsFromForm(): void {
   const themeRadio = document.querySelector<HTMLInputElement>('input[name="theme"]:checked');
   const playerRadio = document.querySelector<HTMLInputElement>('input[name="player"]:checked');
@@ -74,7 +65,6 @@ export function readSettingsFromForm(): void {
   });
 }
 
-/** Theme-Hover: Beim Hovern über eine Theme-Option die passende Vorschau anzeigen */
 export function setupSettingsThemeHover(): void {
   const themeLabels = document.querySelectorAll<HTMLElement>('#settings-themes .settings__radio');
   const themesGroup = document.getElementById('settings-themes');
@@ -96,7 +86,6 @@ export function setupSettingsThemeHover(): void {
   });
 }
 
-/** Theme-Change: Bei Auswahl über Radio die Vorschau aktualisieren */
 export function setupSettingsThemeChange(): void {
   const themeRadios = document.querySelectorAll<HTMLInputElement>('input[name="theme"]');
   themeRadios.forEach((radio) => {
@@ -107,7 +96,6 @@ export function setupSettingsThemeChange(): void {
   });
 }
 
-/** Settings-Änderungen: Start-Leiste aktualisieren */
 export function setupStartBarUpdates(): void {
   const allRadios = document.querySelectorAll<HTMLInputElement>('#settings input[type="radio"]');
   allRadios.forEach((radio) => {

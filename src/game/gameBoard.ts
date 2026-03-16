@@ -1,7 +1,3 @@
-/**
- * Spielbrett – Rendering, Karten-Logik, Gewinner-Anzeige
- */
-
 import {
   getSettings,
   getRuntimeState,
@@ -19,12 +15,10 @@ import { resolvePath } from '../utils/path';
 import type { Theme } from '../types/game.types';
 import { showPage, showGameOver } from '../navigation/navigation';
 
-/** Erzeugt den Karten-Dateinamen für einen Index */
 export function getCardFileName(baseName: string, index: number): string {
   return index === 0 ? `${baseName}.png` : `${baseName} (${index}).png`;
 }
 
-/** Rendert das Memory-Spielfeld mit gemischten Karten */
 export function renderGameBoard(): void {
   const boardEl = document.getElementById('game-board');
   const theme = getThemeById(getSettings().theme);
@@ -88,7 +82,6 @@ function unflipCard(cardEl: HTMLButtonElement): void {
   cardEl.classList.remove('game__card--flipped');
 }
 
-/** Rendert den "GAME OVER" Titel je nach Theme */
 export function renderGameOverTitle(theme: Theme | undefined): void {
   const container = document.getElementById('game-over-title');
   if (!container || !theme?.gameOverTitle) return;
@@ -134,7 +127,6 @@ export function renderGameOverTitle(theme: Theme | undefined): void {
   }
 }
 
-/** Aktualisiert die Score-Anzeige (Blue/Orange) */
 export function updateScoreDisplay(): void {
   const { scoreBlue, scoreOrange } = getRuntimeState();
   const elBlue = document.getElementById('score-blue');
@@ -143,7 +135,6 @@ export function updateScoreDisplay(): void {
   if (elOrange) elOrange.textContent = String(scoreOrange);
 }
 
-/** Aktualisiert den Spieler-Indikator */
 export function updateCurrentPlayerIndicator(): void {
   const indicatorEl = document.getElementById('game-player-indicator');
   const iconEl = indicatorEl?.querySelector<HTMLImageElement>('.game__player-icon');
@@ -159,7 +150,6 @@ export function updateCurrentPlayerIndicator(): void {
   }
 }
 
-/** Aktualisiert die Punktestand-Anzeige auf der Game-Over-Seite */
 export function updateGameOverScore(): void {
   const { scoreBlue, scoreOrange } = getRuntimeState();
   const elBlue = document.getElementById('game-over-score-blue');
@@ -168,7 +158,6 @@ export function updateGameOverScore(): void {
   if (elOrange) elOrange.textContent = String(scoreOrange);
 }
 
-/** Aktualisiert die Gewinner-Anzeige */
 export function updateWinnerDisplay(): void {
   const winner = getWinner();
   const theme = getThemeById(getSettings().theme);
@@ -228,7 +217,6 @@ export function updateWinnerDisplay(): void {
   }
 }
 
-/** Behandelt Klick auf eine Karte */
 export function handleCardClick(e: Event): void {
   const card = (e.target as HTMLElement).closest<HTMLButtonElement>('.game__card');
   if (!card) return;

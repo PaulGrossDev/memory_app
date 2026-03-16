@@ -1,13 +1,8 @@
-/**
- * Theme-Anwendung – wendet Theme-Styling auf DOM und CSS-Variablen an
- */
-
 import { getSettings, getRuntimeState, getWinner } from '../state/gameState';
 import { getThemeById, PLAYER_COLORS } from '../data/themes';
 import { resolvePath } from '../utils/path';
 import type { Theme } from '../types/game.types';
 
-/** Wendet das Theme-Styling auf den Exit-Button an */
 export function applyExitButtonTheme(theme: { exitButton: Theme['exitButton'] } | undefined): void {
   if (!theme?.exitButton) return;
 
