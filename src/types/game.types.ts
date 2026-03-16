@@ -1,6 +1,7 @@
 export type PlayerColor = 'blue' | 'orange';
 export type BoardSize = '16' | '24' | '36';
 export type ThemeId = 'code-vibes' | 'gaming' | 'da-projects' | 'foods';
+export type PageId = 'home' | 'settings' | 'game' | 'game-over' | 'winner';
 
 export interface FontStyle {
   fontFamily: string;

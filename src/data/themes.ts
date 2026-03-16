@@ -580,6 +580,12 @@ export const THEMES: Theme[] = [
   },
 ];
 
+/**
+ * Sucht ein Theme anhand seiner ID.
+ *
+ * @param themeId - ID des Themes
+ * @returns Theme oder undefined
+ */
 export function getThemeById(themeId: string): Theme | undefined {
   return THEMES.find((t) => t.id === themeId);
 }

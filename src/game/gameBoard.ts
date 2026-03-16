@@ -13,63 +13,34 @@ import {
 import { getThemeById, PLAYER_COLORS } from '../data/themes';
 import { resolvePath } from '../utils/path';
 import type { Theme } from '../types/game.types';
-import { showPage, showGameOver } from '../navigation/navigation';
+import { showGameOver } from '../navigation/navigation';
+import {
+  getCardFileName,
+  createShuffledCardIndices,
+  createCardElement,
+  applyWinnerNameColor,
+  setWinnerIconSrc,
+} from './gameBoardHelpers';
 
-export function getCardFileName(baseName: string, index: number): string {
-  return index === 0 ? `${baseName}.png` : `${baseName} (${index}).png`;
-}
+export { getCardFileName };
 
+/**
+ * Rendert das Spielfeld mit gemischten Karten basierend auf Theme und Board-Größe.
+ */
 export function renderGameBoard(): void {
   const boardEl = document.getElementById('game-board');
   const theme = getThemeById(getSettings().theme);
   if (!boardEl || !theme?.cardsPath || !theme.cardBaseName || !theme.backsitePath) return;
 
-  const boardSize = getSettings().boardSize;
-  const pairCount = parseInt(boardSize, 10) / 2;
-  const baseName = theme.cardBaseName;
-
-  const cardIndices: number[] = [];
-  for (let i = 0; i < pairCount; i++) {
-    cardIndices.push(i, i);
-  }
-  for (let i = cardIndices.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [cardIndices[i], cardIndices[j]] = [cardIndices[j], cardIndices[i]];
-  }
-
+  const pairCount = parseInt(getSettings().boardSize, 10) / 2;
   const backsiteUrl = resolvePath(theme.backsitePath);
   const cardsPath = theme.cardsPath.endsWith('/') ? theme.cardsPath : theme.cardsPath + '/';
 
   boardEl.innerHTML = '';
-  cardIndices.forEach((index, i) => {
-    const card = document.createElement('button');
-    card.type = 'button';
-    card.className = 'game__card';
-    card.dataset.index = String(i);
-    card.dataset.pairId = String(index);
-
-    const inner = document.createElement('span');
-    inner.className = 'game__card-inner';
-
-    const faceBack = document.createElement('span');
-    faceBack.className = 'game__card-face game__card-face--back';
-    const imgBack = document.createElement('img');
-    imgBack.src = backsiteUrl;
-    imgBack.alt = '';
-    imgBack.setAttribute('aria-hidden', 'true');
-    faceBack.appendChild(imgBack);
-
-    const faceFront = document.createElement('span');
-    faceFront.className = 'game__card-face game__card-face--front';
-    const imgFront = document.createElement('img');
-    imgFront.src = resolvePath(cardsPath + getCardFileName(baseName, index));
-    imgFront.alt = '';
-    imgFront.setAttribute('aria-hidden', 'true');
-    faceFront.appendChild(imgFront);
-
-    inner.appendChild(faceBack);
-    inner.appendChild(faceFront);
-    card.appendChild(inner);
+  const cardIndices = createShuffledCardIndices(pairCount);
+  const baseName = theme.cardBaseName;
+  cardIndices.forEach((pairId, i) => {
+    const card = createCardElement(i, pairId, backsiteUrl, cardsPath, baseName);
     boardEl.appendChild(card);
   });
 }
@@ -82,51 +53,74 @@ function unflipCard(cardEl: HTMLButtonElement): void {
   cardEl.classList.remove('game__card--flipped');
 }
 
+function renderGameOverTitleSvgLetters(
+  container: HTMLElement,
+  iconsPath: string,
+  dropShadow: string | undefined
+): void {
+  const letters = ['g', 'a', 'm', 'e', 'o', 'v', 'e', 'r'];
+  letters.forEach((letter, i) => {
+    const img = document.createElement('img');
+    img.src = resolvePath(iconsPath + letter + '.svg');
+    img.alt = '';
+    img.className = 'game-over__letter';
+    img.setAttribute('aria-hidden', 'true');
+    if (dropShadow) {
+      const shadows = dropShadow.split(',').map((s) => s.trim());
+      img.style.filter = shadows.map((s) => `drop-shadow(${s})`).join(' ');
+    }
+    container.appendChild(img);
+    if (i === 3) {
+      const space = document.createElement('span');
+      space.className = 'game-over__space';
+      space.setAttribute('aria-hidden', 'true');
+      container.appendChild(space);
+    }
+  });
+}
+
+function renderGameOverTitleText(
+  container: HTMLElement,
+  title: Extract<NonNullable<Theme['gameOverTitle']>, { type: 'text' }>
+): void {
+  const span = document.createElement('span');
+  span.textContent = 'GAME OVER';
+  span.className = 'game-over__title-text';
+  container.appendChild(span);
+  document.documentElement.style.setProperty('--game-over-font-family', title.fontFamily);
+  document.documentElement.style.setProperty('--game-over-font-weight', String(title.fontWeight));
+  document.documentElement.style.setProperty('--game-over-font-size', title.fontSize);
+  document.documentElement.style.setProperty('--game-over-color', title.color);
+  document.documentElement.style.setProperty('--game-over-text-shadow', title.textShadow ?? 'none');
+  document.documentElement.style.setProperty('--game-over-letter-spacing', title.letterSpacing ?? 'normal');
+}
+
+/**
+ * Rendert den Game-Over-Titel (SVG-Buchstaben oder Text) gemäß Theme.
+ *
+ * @param theme - Aktives Theme oder undefined
+ */
 export function renderGameOverTitle(theme: Theme | undefined): void {
   const container = document.getElementById('game-over-title');
   if (!container || !theme?.gameOverTitle) return;
 
   container.innerHTML = '';
   container.className = 'game-over__title';
-
   const title = theme.gameOverTitle;
+
   if (title.type === 'svg-letters') {
     container.classList.add('game-over__title--svg');
-    const letters = ['g', 'a', 'm', 'e', 'o', 'v', 'e', 'r'];
     const iconsPath = title.iconsPath.endsWith('/') ? title.iconsPath : title.iconsPath + '/';
-    letters.forEach((letter, i) => {
-      const img = document.createElement('img');
-      img.src = resolvePath(iconsPath + letter + '.svg');
-      img.alt = '';
-      img.className = 'game-over__letter';
-      img.setAttribute('aria-hidden', 'true');
-      if (title.dropShadow) {
-        const shadows = title.dropShadow.split(',').map((s) => s.trim());
-        img.style.filter = shadows.map((s) => `drop-shadow(${s})`).join(' ');
-      }
-      container.appendChild(img);
-      if (i === 3) {
-        const space = document.createElement('span');
-        space.className = 'game-over__space';
-        space.setAttribute('aria-hidden', 'true');
-        container.appendChild(space);
-      }
-    });
+    renderGameOverTitleSvgLetters(container, iconsPath, title.dropShadow);
   } else {
     container.classList.add('game-over__title--text');
-    const span = document.createElement('span');
-    span.textContent = 'GAME OVER';
-    span.className = 'game-over__title-text';
-    container.appendChild(span);
-    document.documentElement.style.setProperty('--game-over-font-family', title.fontFamily);
-    document.documentElement.style.setProperty('--game-over-font-weight', String(title.fontWeight));
-    document.documentElement.style.setProperty('--game-over-font-size', title.fontSize);
-    document.documentElement.style.setProperty('--game-over-color', title.color);
-    document.documentElement.style.setProperty('--game-over-text-shadow', title.textShadow ?? 'none');
-    document.documentElement.style.setProperty('--game-over-letter-spacing', title.letterSpacing ?? 'normal');
+    renderGameOverTitleText(container, title as Extract<NonNullable<Theme['gameOverTitle']>, { type: 'text' }>);
   }
 }
 
+/**
+ * Aktualisiert die Score-Anzeige (Blau/Orange) im Spiel.
+ */
 export function updateScoreDisplay(): void {
   const { scoreBlue, scoreOrange } = getRuntimeState();
   const elBlue = document.getElementById('score-blue');
@@ -135,6 +129,9 @@ export function updateScoreDisplay(): void {
   if (elOrange) elOrange.textContent = String(scoreOrange);
 }
 
+/**
+ * Aktualisiert die Anzeige des aktuellen Spielers (Label oder Figure-Icon).
+ */
 export function updateCurrentPlayerIndicator(): void {
   const indicatorEl = document.getElementById('game-player-indicator');
   const iconEl = indicatorEl?.querySelector<HTMLImageElement>('.game__player-icon');
@@ -150,6 +147,9 @@ export function updateCurrentPlayerIndicator(): void {
   }
 }
 
+/**
+ * Aktualisiert die Score-Anzeige auf der Game-Over-Seite.
+ */
 export function updateGameOverScore(): void {
   const { scoreBlue, scoreOrange } = getRuntimeState();
   const elBlue = document.getElementById('game-over-score-blue');
@@ -158,6 +158,21 @@ export function updateGameOverScore(): void {
   if (elOrange) elOrange.textContent = String(scoreOrange);
 }
 
+const WINNER_INTRO: Record<'blue' | 'orange' | 'draw', string> = {
+  blue: 'The winner is',
+  orange: 'The winner is',
+  draw: '',
+};
+
+const WINNER_TITLE: Record<'blue' | 'orange' | 'draw', string> = {
+  blue: 'Blue Player',
+  orange: 'Orange Player',
+  draw: "It's a draw!",
+};
+
+/**
+ * Aktualisiert die Winner-Anzeige (Intro, Titel, Icon, Farbe) je nach Gewinner.
+ */
 export function updateWinnerDisplay(): void {
   const winner = getWinner();
   const theme = getThemeById(getSettings().theme);
@@ -168,55 +183,39 @@ export function updateWinnerDisplay(): void {
   if (!titleEl) return;
 
   if (winnerEl) winnerEl.dataset.winner = winner;
+  if (introEl) introEl.textContent = WINNER_INTRO[winner];
+  titleEl.textContent = WINNER_TITLE[winner];
 
-  const name = theme?.winnerName;
-  const icon = theme?.winnerIcon;
+  setWinnerIconSrc(iconEl, theme?.winnerIcon, winner);
+  applyWinnerNameColor(winnerEl, theme?.winnerName, winner);
+}
 
-  if (winner === 'blue') {
-    if (introEl) introEl.textContent = 'The winner is';
-    titleEl.textContent = 'Blue Player';
-    if (iconEl) {
-      if (icon) {
-        iconEl.src = resolvePath(icon.bluePath ?? icon.path ?? '/assets/icons/figure-blue.svg');
-        iconEl.style.display = 'block';
-      } else {
-        iconEl.style.display = 'none';
-      }
-    }
-    if (winnerEl) {
-      if (name?.colorBlue) winnerEl.style.setProperty('--winner-name-color', name.colorBlue);
-      else if (name?.color) winnerEl.style.setProperty('--winner-name-color', name.color);
-    }
-  } else if (winner === 'orange') {
-    if (introEl) introEl.textContent = 'The winner is';
-    titleEl.textContent = 'Orange Player';
-    if (iconEl) {
-      if (icon) {
-        iconEl.src = resolvePath(icon.orangePath ?? icon.path ?? '/assets/icons/figure-orange.svg');
-        iconEl.style.display = 'block';
-      } else {
-        iconEl.style.display = 'none';
-      }
-    }
-    if (winnerEl) {
-      if (name?.colorOrange) winnerEl.style.setProperty('--winner-name-color', name.colorOrange);
-      else if (name?.color) winnerEl.style.setProperty('--winner-name-color', name.color);
-    }
+function handleMatch(card0: HTMLButtonElement | null, card1: HTMLButtonElement | null, pairId0: number, pairId1: number): void {
+  const state = getRuntimeState();
+  if (pairId0 === pairId1) {
+    addScore(state.currentPlayer);
+    addMatchedPair(pairId0);
+    clearFlippedIndices();
+    setLocked(false);
+    updateScoreDisplay();
+    if (areAllPairsMatched()) showGameOver();
   } else {
-    if (introEl) introEl.textContent = '';
-    titleEl.textContent = "It's a draw!";
-    if (iconEl) {
-      if (icon?.path) {
-        iconEl.src = resolvePath(icon.path);
-        iconEl.style.display = 'block';
-      } else {
-        iconEl.style.display = 'none';
-      }
-    }
-    if (winnerEl && name?.color) winnerEl.style.setProperty('--winner-name-color', name.color);
+    setTimeout(() => {
+      if (card0) unflipCard(card0);
+      if (card1) unflipCard(card1);
+      clearFlippedIndices();
+      switchPlayer();
+      updateCurrentPlayerIndicator();
+      setLocked(false);
+    }, 800);
   }
 }
 
+/**
+ * Event-Handler für Kartenklicks. Prüft Spielregeln und verarbeitet Match/No-Match.
+ *
+ * @param e - Click-Event
+ */
 export function handleCardClick(e: Event): void {
   const card = (e.target as HTMLElement).closest<HTMLButtonElement>('.game__card');
   if (!card) return;
@@ -242,26 +241,6 @@ export function handleCardClick(e: Event): void {
     const card1 = document.querySelector<HTMLButtonElement>(`[data-index="${idx1}"]`);
     const pairId0 = parseInt(card0?.dataset.pairId ?? '-1', 10);
     const pairId1 = parseInt(card1?.dataset.pairId ?? '-1', 10);
-
-    if (pairId0 === pairId1) {
-      addScore(newState.currentPlayer);
-      addMatchedPair(pairId0);
-      clearFlippedIndices();
-      setLocked(false);
-      updateScoreDisplay();
-
-      if (areAllPairsMatched()) {
-        showGameOver();
-      }
-    } else {
-      setTimeout(() => {
-        if (card0) unflipCard(card0);
-        if (card1) unflipCard(card1);
-        clearFlippedIndices();
-        switchPlayer();
-        updateCurrentPlayerIndicator();
-        setLocked(false);
-      }, 800);
-    }
+    handleMatch(card0 ?? null, card1 ?? null, pairId0, pairId1);
   }
 }

@@ -1,29 +1,7 @@
 import { getSettings } from '../state/gameState';
 import { getThemeById } from '../data/themes';
-import type { ThemeId } from '../types/game.types';
-import {
-  applyExitButtonTheme,
-  applyCurrentPlayerTheme,
-  applyPlayerIndicatorTheme,
-  applyScoreDisplayTheme,
-  applyBoardTheme,
-  applyExitConfirmModalTheme,
-  applyGameOverFinalScoreTheme,
-  applyGameOverScoreTheme,
-  applyWinnerIntroTheme,
-  applyWinnerNameTheme,
-  applyWinnerIconTheme,
-  applyWinnerButtonTheme,
-} from '../theme/themeApply';
-import {
-  renderGameBoard,
-  updateScoreDisplay,
-  updateCurrentPlayerIndicator,
-  renderGameOverTitle,
-  updateGameOverScore,
-  updateWinnerDisplay,
-  handleCardClick,
-} from '../game/gameBoard';
+import type { PageId } from '../types/game.types';
+import { handleCardClick } from '../game/gameBoard';
 import { setSettings, resetRuntimeState } from '../state/gameState';
 import {
   showThemePreview,
@@ -31,61 +9,32 @@ import {
   readSettingsFromForm,
 } from '../settings/settings';
 
-export type PageId = 'home' | 'settings' | 'game' | 'game-over' | 'winner';
+export type { PageId } from '../types/game.types';
+
+import {
+  getPageBackgroundColors,
+  applyThemeForGamePage,
+  runGameOverToWinnerTransition,
+  GAME_OVER_TO_WINNER_DELAY_MS,
+} from './navigationHelpers';
 
 function applyPageBackground(pageId: PageId): void {
-  let bgColor: string;
-  let headerBg: string;
+  const { bgColor, headerBg } = getPageBackgroundColors(pageId);
 
-  if (pageId === 'home') {
-    bgColor = '#303131';
-    headerBg = 'transparent';
-  } else if (pageId === 'settings') {
-    bgColor = '#ffffff';
-    headerBg = 'transparent';
-  } else if (pageId === 'game' || pageId === 'game-over' || pageId === 'winner') {
+  if (pageId === 'game' || pageId === 'game-over' || pageId === 'winner') {
     const theme = getThemeById(getSettings().theme);
-    bgColor =
-      pageId === 'winner'
-        ? (theme?.winnerBackground ?? theme?.gameOverBackground ?? theme?.pageBackground ?? '#303131')
-        : pageId === 'game-over'
-          ? (theme?.gameOverBackground ?? theme?.pageBackground ?? '#303131')
-          : (theme?.pageBackground ?? '#303131');
-    headerBg = theme?.headerBackground ?? 'transparent';
-    applyExitButtonTheme(theme);
-    applyCurrentPlayerTheme(theme);
-    applyPlayerIndicatorTheme(theme);
-    applyScoreDisplayTheme(theme);
-    applyBoardTheme(theme);
-    applyExitConfirmModalTheme(theme);
-    if (pageId === 'game') {
-      renderGameBoard();
-      updateScoreDisplay();
-      updateCurrentPlayerIndicator();
-    } else if (pageId === 'game-over') {
-      renderGameOverTitle(theme);
-      applyGameOverFinalScoreTheme(theme);
-      applyGameOverScoreTheme(theme);
-      updateGameOverScore();
-      document.documentElement.style.setProperty('--game-over-title-gap', theme?.gameOverTitleGap ?? '104px');
-    } else if (pageId === 'winner') {
-      const winnerEl = document.getElementById('winner');
-      if (winnerEl) winnerEl.dataset.theme = getSettings().theme;
-      applyWinnerIntroTheme(theme);
-      applyWinnerNameTheme(theme);
-      applyWinnerIconTheme(theme);
-      applyWinnerButtonTheme(theme);
-      updateWinnerDisplay();
-    }
-  } else {
-    bgColor = '#303131';
-    headerBg = 'transparent';
+    applyThemeForGamePage(pageId, theme);
   }
 
   document.body.style.backgroundColor = bgColor;
   document.documentElement.style.setProperty('--color-header-bg', headerBg);
 }
 
+/**
+ * Zeigt eine Seite an und blendet alle anderen aus.
+ *
+ * @param pageId - ID der anzuzeigenden Seite
+ */
 export function showPage(pageId: PageId): void {
   const pages = document.querySelectorAll<HTMLElement>('.page');
   const targetPage = document.getElementById(pageId);
@@ -103,6 +52,9 @@ export function showPage(pageId: PageId): void {
   applyPageBackground(pageId);
 }
 
+/**
+ * Öffnet das Exit-Bestätigungs-Modal.
+ */
 export function showExitConfirmModal(): void {
   const modal = document.getElementById('exit-confirm-modal');
   if (modal) {
@@ -111,6 +63,9 @@ export function showExitConfirmModal(): void {
   }
 }
 
+/**
+ * Schließt das Exit-Bestätigungs-Modal.
+ */
 export function hideExitConfirmModal(): void {
   const modal = document.getElementById('exit-confirm-modal');
   if (modal) {
@@ -119,42 +74,26 @@ export function hideExitConfirmModal(): void {
   }
 }
 
-const GAME_OVER_TO_WINNER_DELAY_MS = 1200;
-const GAME_OVER_TO_WINNER_ANIMATION_MS = 500;
-
+/**
+ * Zeigt die Game-Over-Seite und startet nach Verzögerung die Transition zur Winner-Seite.
+ */
 export function showGameOver(): void {
   showPage('game-over');
-  const timeoutId = window.setTimeout(() => {
-    const app = document.getElementById('app');
-    const gameOverPage = document.getElementById('game-over');
-    const winnerPage = document.getElementById('winner');
-    if (!app || !gameOverPage || !winnerPage) return;
-
-    const themeId = getSettings().theme;
-
-    applyPageBackground('winner');
-    winnerPage.classList.add('page--visible');
-    app.classList.add('page--game-over-to-winner');
-    app.dataset.transitionTheme = themeId;
-    document.documentElement.classList.add('page--game-over-to-winner');
-    document.body.classList.add('page--game-over-to-winner');
-
-    window.setTimeout(() => {
-      app.classList.remove('page--game-over-to-winner');
-      delete app.dataset.transitionTheme;
-      document.documentElement.classList.remove('page--game-over-to-winner');
-      document.body.classList.remove('page--game-over-to-winner');
-      gameOverPage.classList.remove('page--visible');
-    }, GAME_OVER_TO_WINNER_ANIMATION_MS);
-  }, GAME_OVER_TO_WINNER_DELAY_MS);
+  const timeoutId = window.setTimeout(runGameOverToWinnerTransition, GAME_OVER_TO_WINNER_DELAY_MS);
   (window as unknown as { _gameOverTimeout?: number })._gameOverTimeout = timeoutId;
 }
 
+/**
+ * Registriert den Klick-Handler für das Spielfeld.
+ */
 export function setupGameBoardListeners(): void {
   const boardEl = document.getElementById('game-board');
   boardEl?.addEventListener('click', handleCardClick);
 }
 
+/**
+ * Registriert den Shortcut Strg+Shift+G zum direkten Aufruf von Game Over.
+ */
 export function setupGameOverShortcut(): void {
   document.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.shiftKey && e.key?.toLowerCase() === 'g') {
@@ -168,6 +107,9 @@ export function setupGameOverShortcut(): void {
   });
 }
 
+/**
+ * Registriert alle Navigations-Event-Handler (Start, Exit, Home, etc.).
+ */
 export function setupNavigation(): void {
   const btnStart = document.getElementById('btn-start');
   const btnStartGame = document.getElementById('btn-start-game');
