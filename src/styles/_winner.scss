@@ -1,6 +1,5 @@
 /**
  * Gewinner-Anzeige
- * Theme-spezifische Übergangs-Animationen (move-in-top, move-in-bottom, dissolve, scale-in)
  */
 
 @use 'variables' as *;
@@ -25,77 +24,6 @@
   flex-direction: column;
   align-items: center;
   gap: 8px;
-
-  /* Animationen – werden per Klasse + CSS-Variablen gesteuert */
-  &--move-in-top {
-    animation-name: winner-move-in-top;
-    animation-duration: var(--winner-animation-duration, 500ms);
-    animation-timing-function: var(--winner-animation-easing, ease-out);
-    animation-fill-mode: forwards;
-  }
-
-  &--move-in-bottom {
-    animation-name: winner-move-in-bottom;
-    animation-duration: var(--winner-animation-duration, 500ms);
-    animation-timing-function: var(--winner-animation-easing, ease-out);
-    animation-fill-mode: forwards;
-  }
-
-  &--dissolve {
-    animation-name: winner-dissolve;
-    animation-duration: var(--winner-animation-duration, 500ms);
-    animation-timing-function: var(--winner-animation-easing, ease-out);
-    animation-fill-mode: forwards;
-  }
-
-  &--scale-in {
-    animation-name: winner-scale-in;
-    animation-duration: var(--winner-animation-duration, 500ms);
-    animation-timing-function: var(--winner-animation-easing, ease-out);
-    animation-fill-mode: forwards;
-  }
-}
-
-@keyframes winner-move-in-top {
-  from {
-    opacity: 0;
-    transform: translateY(-100%);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes winner-move-in-bottom {
-  from {
-    opacity: 0;
-    transform: translateY(100%);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes winner-dissolve {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes winner-scale-in {
-  from {
-    opacity: 0;
-    transform: scale(0.6);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
 }
 
 .winner__intro {

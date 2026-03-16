@@ -667,52 +667,19 @@ function updateWinnerDisplay(): void {
   }
 }
 
-/** Zeigt die Game-Over-Seite und wechselt nach delay zur Winner-Page mit Animation */
+/** Zeigt die Game-Over-Seite und wechselt nach 1200ms zur Winner-Page */
 function showGameOver(): void {
   showPage('game-over');
-  const theme = getThemeById(getSettings().theme);
-  const config = theme?.gameOverToWinner ?? {
-    delayMs: 1200,
-    animation: 'move-in-top',
-    durationMs: 500,
-    easing: 'ease-out',
-  };
   const timeoutId = window.setTimeout(() => {
-    transitionToWinner(config);
-  }, config.delayMs);
+    const gameOverPage = document.getElementById('game-over');
+    const winnerPage = document.getElementById('winner');
+    if (!gameOverPage || !winnerPage) return;
+
+    gameOverPage.classList.remove('page--visible');
+    winnerPage.classList.add('page--visible');
+    applyPageBackground('winner');
+  }, 1200);
   (window as unknown as { _gameOverTimeout?: number })._gameOverTimeout = timeoutId;
-}
-
-/** Wechselt von Game Over zur Winner-Page mit theme-spezifischer Animation */
-function transitionToWinner(config: {
-  animation: 'move-in-top' | 'move-in-bottom' | 'dissolve' | 'scale-in';
-  durationMs: number;
-  easing: string;
-}): void {
-  const gameOverPage = document.getElementById('game-over');
-  const winnerPage = document.getElementById('winner');
-  const winnerContent = document.getElementById('winner-content');
-  if (!gameOverPage || !winnerPage || !winnerContent) return;
-
-  gameOverPage.classList.remove('page--visible');
-  winnerPage.classList.add('page--visible');
-  applyPageBackground('winner');
-
-  winnerContent.classList.remove(
-    'winner__content--move-in-top',
-    'winner__content--move-in-bottom',
-    'winner__content--dissolve',
-    'winner__content--scale-in'
-  );
-  winnerContent.classList.add(`winner__content--${config.animation}`);
-  document.documentElement.style.setProperty(
-    '--winner-animation-duration',
-    `${config.durationMs}ms`
-  );
-  document.documentElement.style.setProperty(
-    '--winner-animation-easing',
-    config.easing
-  );
 }
 
 /** Behandelt Klick auf eine Karte */
@@ -905,7 +872,7 @@ function setupNavigation(): void {
   if (btnExitConfirm) {
     btnExitConfirm.addEventListener('click', () => {
       hideExitConfirmModal();
-      showPage('home');
+      showPage('settings');
     });
   }
 
@@ -915,7 +882,7 @@ function setupNavigation(): void {
   }
 
   if (btnHome) {
-    btnHome.addEventListener('click', () => showPage('home'));
+    btnHome.addEventListener('click', () => showPage('settings'));
   }
 }
 

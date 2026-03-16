@@ -17,12 +17,6 @@ export const THEMES: Theme[] = [
     name: 'Code vibes theme',
     pageBackground: '#303131',
     gameOverBackground: '#303131',
-    gameOverToWinner: {
-      delayMs: 1200,
-      animation: 'move-in-top',
-      durationMs: 500,
-      easing: 'ease-out',
-    },
     winnerIntro: {
       fontFamily: 'Red Rose',
       fontWeight: 400,
@@ -157,12 +151,6 @@ export const THEMES: Theme[] = [
     name: 'Gaming theme',
     pageBackground: '#294F60',
     gameOverBackground: '#294F60',
-    gameOverToWinner: {
-      delayMs: 1200,
-      animation: 'move-in-bottom',
-      durationMs: 300,
-      easing: 'ease-out',
-    },
     winnerIntro: {
       fontFamily: 'Orbitron',
       fontWeight: 700,
@@ -262,9 +250,9 @@ export const THEMES: Theme[] = [
       accent: '#FFDD47',
     },
     cardsPath: '/assets/themes/gaming/cards/',
-    cardBaseName: 'Rectangle 37',
+    cardBaseName: 'Front',
     backsitePath: '/assets/themes/gaming/backsite.png',
-    boardGap: '6px',
+    boardGap: '0',
     previewCardColors: ['#6366f1', '#ec4899'],
     previewImages: {
       image1: '/assets/themes/gaming-card1.svg',
@@ -313,12 +301,6 @@ export const THEMES: Theme[] = [
     name: 'DA Projects theme',
     pageBackground: '#FFFFFF',
     gameOverBackground: '#294F60',
-    gameOverToWinner: {
-      delayMs: 1200,
-      animation: 'dissolve',
-      durationMs: 400,
-      easing: 'ease-out',
-    },
     winnerIntro: {
       fontFamily: 'Figtree',
       fontWeight: 400,
@@ -459,12 +441,6 @@ export const THEMES: Theme[] = [
     name: 'Foods theme',
     pageBackground: '#FFFFFF',
     gameOverBackground: '#F3832D',
-    gameOverToWinner: {
-      delayMs: 1200,
-      animation: 'scale-in',
-      durationMs: 400,
-      easing: 'ease-out',
-    },
     winnerBackground: '#F6F6F6',
     winnerIntro: {
       fontFamily: 'Figtree',

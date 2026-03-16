@@ -27,13 +27,6 @@ export interface Theme {
   pageBackground: string;
   /** Hintergrundfarbe der Game-Over-Seite */
   gameOverBackground?: string;
-  /** Übergang von Game Over zur Winner-Page nach X ms */
-  gameOverToWinner?: {
-    delayMs: number;
-    animation: 'move-in-top' | 'move-in-bottom' | 'dissolve' | 'scale-in';
-    durationMs: number;
-    easing: string;
-  };
   /** Hintergrundfarbe der Winner-Page (überschreibt gameOverBackground nur auf dieser Seite) */
   winnerBackground?: string;
   /** "The winner is" Text auf der Winner-Page – pro Theme unterschiedlich */
