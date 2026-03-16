@@ -62,6 +62,20 @@ export interface Theme {
       boxShadow?: string;
     };
   };
+  /** Button "Zur Startseite" auf der Winner-Page – pro Theme unterschiedlich */
+  winnerButton?: {
+    text: string;
+    fontFamily: string;
+    fontWeight: number;
+    fontSize: string;
+    color: string;
+    padding?: string;
+    background?: string;
+    border?: string;
+    borderRadius?: string;
+    boxShadow?: string;
+    letterSpacing?: string;
+  };
   /** Gewinner-Name (Blue/Orange) auf der Winner-Page – pro Theme unterschiedlich */
   winnerName?: {
     fontFamily: string;

@@ -67,6 +67,7 @@ function applyPageBackground(pageId: PageId): void {
       applyWinnerIntroTheme(theme);
       applyWinnerNameTheme(theme);
       applyWinnerIconTheme(theme);
+      applyWinnerButtonTheme(theme);
       updateWinnerDisplay();
     }
   } else {
@@ -488,6 +489,30 @@ function updateGameOverScore(): void {
   const elOrange = document.getElementById('game-over-score-orange');
   if (elBlue) elBlue.textContent = String(scoreBlue);
   if (elOrange) elOrange.textContent = String(scoreOrange);
+}
+
+/** Wendet das Theme-Styling auf den "Zur Startseite"-Button an */
+function applyWinnerButtonTheme(theme: Theme | undefined): void {
+  const btn = theme?.winnerButton;
+  const btnEl = document.getElementById('btn-home');
+  const winnerEl = document.getElementById('winner');
+  if (!winnerEl) return;
+
+  if (btn && btnEl) {
+    btnEl.textContent = btn.text;
+    winnerEl.style.setProperty('--winner-btn-font-family', btn.fontFamily);
+    winnerEl.style.setProperty('--winner-btn-font-weight', String(btn.fontWeight));
+    winnerEl.style.setProperty('--winner-btn-font-size', btn.fontSize);
+    winnerEl.style.setProperty('--winner-btn-color', btn.color);
+    winnerEl.style.setProperty('--winner-btn-padding', btn.padding ?? '12px 20px');
+    winnerEl.style.setProperty('--winner-btn-background', btn.background ?? 'transparent');
+    winnerEl.style.setProperty('--winner-btn-border', btn.border ?? 'none');
+    winnerEl.style.setProperty('--winner-btn-border-radius', btn.borderRadius ?? '0');
+    winnerEl.style.setProperty('--winner-btn-box-shadow', btn.boxShadow ?? 'none');
+    winnerEl.style.setProperty('--winner-btn-letter-spacing', btn.letterSpacing ?? 'normal');
+  } else if (btnEl) {
+    btnEl.textContent = 'Zur Startseite';
+  }
 }
 
 /** Wendet das Theme-Styling auf das Gewinner-Icon an (Pfad, Breite, Border, Container) */

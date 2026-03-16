@@ -140,19 +140,20 @@
 }
 
 .winner__btn-home {
-  padding: 16px 32px;
-  font-family: var(--game-over-final-score-font-family, 'Red Rose');
-  font-weight: 700;
-  font-size: 1.25rem;
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.2);
-  border: 2px solid rgba(255, 255, 255, 0.6);
-  border-radius: 8px;
+  padding: var(--winner-btn-padding, 16px 32px);
+  font-family: var(--winner-btn-font-family, 'Red Rose');
+  font-weight: var(--winner-btn-font-weight, 700);
+  font-size: var(--winner-btn-font-size, 1.25rem);
+  color: var(--winner-btn-color, #ffffff);
+  letter-spacing: var(--winner-btn-letter-spacing, normal);
+  background: var(--winner-btn-background, rgba(255, 255, 255, 0.2));
+  border: var(--winner-btn-border, 2px solid rgba(255, 255, 255, 0.6));
+  border-radius: var(--winner-btn-border-radius, 8px);
+  box-shadow: var(--winner-btn-box-shadow, none);
   cursor: pointer;
   transition: background 0.2s, border-color 0.2s;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.3);
-    border-color: rgba(255, 255, 255, 0.9);
+    opacity: 0.9;
   }
 }
