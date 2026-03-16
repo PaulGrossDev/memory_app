@@ -1,14 +1,17 @@
 /**
- * SCSS-Variablen – zentrale Werte für das gesamte Projekt
- * Später können diese pro Theme überschrieben werden.
+ * SCSS-Variablen – zentrale Werte (Topic 07)
  */
 
-// Farben (Basis – wird pro Theme erweitert)
-$color-bg: #1a1a2e;
+// Farben
+$color-bg: #303131;
 $color-text: #eaeaea;
 $color-primary: #4a90d9;
 $color-primary-hover: #5a9fe9;
 $color-secondary: #6c757d;
+$color-white: #ffffff;
+$color-dark: #303131;
+$color-accent: #F0EA6E;
+$color-bg-light: #F6F6F6;
 
 // Abstände
 $spacing-xs: 0.25rem;
@@ -19,6 +22,8 @@ $spacing-xl: 2rem;
 
 // Schrift
 $font-family-base: system-ui, -apple-system, sans-serif;
+$font-red-rose: 'Red Rose', serif;
+$font-almarai: 'Almarai', sans-serif;
 $font-size-base: 1rem;
 $font-size-lg: 1.25rem;
 $font-size-xl: 1.5rem;

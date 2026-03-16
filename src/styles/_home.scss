@@ -1,38 +1,33 @@
 /**
- * Startseite / Homescreen – nach Figma-Vorlage
+ * Startseite / Homescreen
  */
 
 @use 'variables' as *;
+@use 'mixins' as *;
 
 #home {
   position: relative;
-  background-color: #303131;
+  background-color: $color-bg;
   overflow: hidden;
+
+  &.page--visible {
+    @include flex-center-col;
+    gap: $spacing-xl;
+  }
 }
 
-/* Hintergrund-Controller – unten links, dezent */
 .home__controller-bg {
   position: absolute;
   bottom: 240px;
   left: -80px;
   width: 414.31px;
   height: 301.31px;
-  /* 5% Transparenz = 95% sichtbar */
   opacity: 0.05;
   transform: rotate(37.42deg);
   transform-origin: bottom left;
   pointer-events: none;
 }
 
-#home.page--visible {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: $spacing-xl;
-}
-
-/* Textblock: zentral, Zeilen links ausgerichtet */
 .home__text {
   text-align: left;
   display: flex;
@@ -42,49 +37,27 @@
 
 .home__subtitle {
   margin: 0;
-  font-family: 'Almarai', sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 48px;
-  line-height: 100%;
-  letter-spacing: 0;
-  color: white;
+  @include typography($font-almarai, 400, 48px, $color-white);
 }
 
 .home__title {
   margin: 0;
-  font-family: 'Red Rose', serif;
-  font-weight: 700;
-  font-style: normal;
-  font-size: 140px;
-  line-height: 100%;
-  letter-spacing: 0;
-  color: white;
+  @include typography($font-red-rose, 700, 140px, $color-white);
 }
 
-/* Play-Button – nach Figma */
 .btn--play {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include flex-center;
   gap: 20px;
   padding: 24px;
-  background-color: #F0EA6E;
+  background-color: $color-accent;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-family: 'Red Rose', serif;
-  font-weight: 700;
-  font-style: normal;
-  font-size: 40px;
-  line-height: 100%;
-  letter-spacing: 0;
-  color: #303131;
+  @include typography($font-red-rose, 700, 40px, $color-dark);
   transition: transform $transition-normal;
 
   &:hover {
     transform: scale(1.05);
-
     .btn__icon--controller {
       transform: rotate(-40deg);
     }
@@ -94,14 +67,7 @@
 .btn__icon {
   flex-shrink: 0;
   transition: transform $transition-normal;
-
-  &--controller {
-    display: block;
-  }
-
-  &--arrow {
-    display: block;
-  }
+  display: block;
 }
 
 .btn__text {

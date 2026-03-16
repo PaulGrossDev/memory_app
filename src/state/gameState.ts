@@ -95,3 +95,11 @@ export function areAllPairsMatched(): boolean {
 export function setLocked(locked: boolean): void {
   runtimeState.isLocked = locked;
 }
+
+/** Ermittelt den Gewinner aus dem aktuellen Score */
+export function getWinner(): PlayerColor | 'draw' {
+  const { scoreBlue, scoreOrange } = runtimeState;
+  if (scoreBlue > scoreOrange) return 'blue';
+  if (scoreOrange > scoreBlue) return 'orange';
+  return 'draw';
+}

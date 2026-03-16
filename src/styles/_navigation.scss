@@ -1,5 +1,5 @@
 /**
- * Navigation – Seitenwechsel per Ein-/Ausblenden
+ * Navigation – Seitenwechsel (BEM + Nesting, Topic 04, 06)
  */
 
 @use 'variables' as *;
@@ -8,8 +8,7 @@
   padding: $spacing-xl;
   min-height: 100vh;
 
-  /* Versteckt, wenn nicht sichtbar – :not() sorgt für korrekte Spezifität */
-  &:not(.page--visible) {
+  &:not(&--visible) {
     display: none !important;
   }
 

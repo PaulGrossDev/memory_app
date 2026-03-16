@@ -1,19 +1,15 @@
 /**
- * Einstellungsseite – Layout nach Figma-Design
- * Weißer Hintergrund, linke Optionen, rechte Vorschau, gelbe Akzente
+ * Einstellungsseite
  */
 
 @use 'variables' as *;
+@use 'mixins' as *;
 
-// Settings nutzt weißen Hintergrund (abweichend von restlicher App)
 #settings.page--visible {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  @include flex-center-col;
   min-height: 100vh;
-  background-color: #ffffff;
-  color: #303131;
+  background-color: $color-white;
+  color: $color-dark;
   padding: $spacing-xl;
 }
 
@@ -36,15 +32,9 @@
 }
 
 .settings__title {
-  font-family: 'Red Rose', sans-serif;
-  font-weight: 700;
-  font-style: normal;
-  font-size: 54px;
-  line-height: 100%;
-  letter-spacing: 0;
-  text-align: left;
-  color: #303131;
   margin: 0;
+  @include typography($font-red-rose, 700, 54px, $color-dark);
+  text-align: left;
 }
 
 .settings__underline {
@@ -94,14 +84,8 @@
   display: flex;
   align-items: center;
   gap: $spacing-sm;
-  font-family: 'Almarai', sans-serif;
-  font-weight: 700;
-  font-style: normal;
-  font-size: 24px;
-  line-height: 100%;
-  letter-spacing: 0;
-  color: #303131;
   margin: 0;
+  @include typography($font-almarai, 700, 24px, $color-dark);
 }
 
 .settings__icon {
@@ -133,7 +117,7 @@
   }
 
   &:hover .settings__radio-text {
-    color: #303131;
+    color: $color-dark;
   }
 }
 
@@ -147,7 +131,7 @@
 .settings__radio-circle {
   width: 18px;
   height: 18px;
-  border: 2px solid #303131;
+  border: 2px solid $color-dark;
   border-radius: 50%;
   flex-shrink: 0;
   background-color: transparent;
@@ -165,7 +149,7 @@
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background-color: #303131;
+    background-color: $color-dark;
   }
 }
 
@@ -214,7 +198,7 @@
 
 .settings__radio-text {
   font-size: 20px;
-  color: #303131;
+  color: $color-dark;
 }
 
 // ============================================
@@ -280,7 +264,7 @@
   justify-content: space-between;
   width: fit-content;
   padding: $spacing-md $spacing-xl;
-  background-color: #F6F6F6;
+  background-color: $color-bg-light;
   gap: $spacing-lg;
   box-sizing: border-box;
 }
@@ -293,13 +277,7 @@
 }
 
 .settings__start-item {
-  font-family: 'Almarai', sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 20px;
-  line-height: 100%;
-  letter-spacing: 0;
-  color: #303131;
+  @include typography($font-almarai, 400, 20px, $color-dark);
 
   &--player-blue {
     color: blue;
@@ -321,7 +299,7 @@
   align-items: center;
   gap: 8px;
   padding: 14px 20px;
-  background-color: #F0EA6E;
+  background-color: $color-accent;
   border: none;
   cursor: pointer;
   transition: opacity $transition-fast;
@@ -338,12 +316,6 @@
 }
 
 .settings__start-btn-text {
-  font-family: 'Red Rose', sans-serif;
-  font-weight: 700;
-  font-style: normal;
-  font-size: 20px;
-  line-height: 100%;
-  letter-spacing: 0;
-  color: #303131;
+  @include typography($font-red-rose, 700, 20px, $color-dark);
 }
 

@@ -2,7 +2,9 @@
  * Spielansicht
  */
 
+@use 'sass:list';
 @use 'variables' as *;
+@use 'mixins' as *;
 
 .game__header {
   display: flex;
@@ -47,26 +49,24 @@
   }
 }
 
+$score-players: (
+  'blue': (#2BB1FF, 1),
+  'orange': (#F58E39, 2),
+);
+
 .game__score-item {
   display: flex;
   align-items: center;
   gap: var(--score-item-gap, 4px);
 
-  &--blue {
-    order: var(--score-order-blue, 1);
+  @each $player, $vals in $score-players {
+    &--#{$player} {
+      order: var(--score-order-#{$player}, list.nth($vals, 2));
 
-    .game__score-label,
-    .game__score-value {
-      color: var(--score-color-blue, #2BB1FF);
-    }
-  }
-
-  &--orange {
-    order: var(--score-order-orange, 2);
-
-    .game__score-label,
-    .game__score-value {
-      color: var(--score-color-orange, #F58E39);
+      .game__score-label,
+      .game__score-value {
+        color: var(--score-color-#{$player}, list.nth($vals, 1));
+      }
     }
   }
 }
@@ -224,11 +224,9 @@
 }
 
 .game__card-face {
+  @include flex-center;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 
   img {
     width: auto;
@@ -285,12 +283,10 @@
 }
 
 .exit-confirm {
+  @include flex-center;
   position: fixed;
   inset: 0;
   z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   padding: $spacing-lg;
   opacity: 0;
   visibility: hidden;
@@ -313,7 +309,7 @@
   position: relative;
   width: fit-content;
   max-width: calc(100vw - 2 * #{$spacing-lg});
-  background: var(--exit-confirm-bg, #FFFFFF);
+  background: var(--exit-confirm-bg, #{$color-white});
   border-radius: var(--exit-confirm-radius, 0);
   padding: 40px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
@@ -329,14 +325,13 @@
   font-family: var(--exit-confirm-font-family, 'Red Rose');
   font-weight: var(--exit-confirm-font-weight, 700);
   font-size: var(--exit-confirm-font-size, 20px);
-  color: var(--exit-confirm-color, #303131);
+  color: var(--exit-confirm-color, #{$color-dark});
   text-align: var(--exit-confirm-text-align, left);
   line-height: 1.4;
 }
 
 .exit-confirm__actions {
-  display: flex;
-  justify-content: center;
+  @include flex-center;
   gap: 24px;
   flex-wrap: nowrap;
 }

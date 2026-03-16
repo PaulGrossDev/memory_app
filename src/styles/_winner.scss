@@ -3,28 +3,20 @@
  */
 
 @use 'variables' as *;
+@use 'mixins' as *;
 
 #winner.page--visible {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  @include flex-center-col;
   text-align: center;
 }
 
-.winner__content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 64px;
+.winner__content,
+.winner__top {
+  @include flex-center-col;
 }
 
-.winner__top {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
+.winner__content { gap: 64px; }
+.winner__top { gap: 8px; }
 
 .winner__intro {
   margin: 0;

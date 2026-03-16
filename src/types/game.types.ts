@@ -12,6 +12,14 @@ export type BoardSize = '16' | '24' | '36';
 /** Theme-ID – entspricht den 4 Figma-Designvorlagen */
 export type ThemeId = 'code-vibes' | 'gaming' | 'da-projects' | 'foods';
 
+/** Basis-Schriftstil – fontFamily, fontWeight, fontSize, color (Topic 11 Interfaces) */
+export interface FontStyle {
+  fontFamily: string;
+  fontWeight: number;
+  fontSize: string;
+  color: string;
+}
+
 /** Einstellungen vor Spielstart – alle Auswahlen des Benutzers */
 export interface GameSettings {
   theme: ThemeId;
@@ -30,13 +38,7 @@ export interface Theme {
   /** Hintergrundfarbe der Winner-Page (überschreibt gameOverBackground nur auf dieser Seite) */
   winnerBackground?: string;
   /** "The winner is" Text auf der Winner-Page – pro Theme unterschiedlich */
-  winnerIntro?: {
-    fontFamily: string;
-    fontWeight: number;
-    fontSize: string;
-    color: string;
-    lineHeight?: string;
-  };
+  winnerIntro?: FontStyle & { lineHeight?: string };
   /** Gewinner-Icon auf der Winner-Page – pro Theme unterschiedlich */
   winnerIcon?: {
     /** Fester Pfad (z.B. gaming: Trophäe für alle) */
@@ -56,12 +58,8 @@ export interface Theme {
     };
   };
   /** Button "Zur Startseite" auf der Winner-Page – pro Theme unterschiedlich */
-  winnerButton?: {
+  winnerButton?: FontStyle & {
     text: string;
-    fontFamily: string;
-    fontWeight: number;
-    fontSize: string;
-    color: string;
     padding?: string;
     background?: string;
     border?: string;
@@ -89,12 +87,7 @@ export interface Theme {
   /** Abstand zwischen GAME OVER Titel und Final score (px) */
   gameOverTitleGap?: string;
   /** "Final score" Text unter dem GAME OVER Titel */
-  gameOverFinalScore?: {
-    fontFamily: string;
-    fontWeight: number;
-    fontSize: string;
-    color: string;
-  };
+  gameOverFinalScore?: FontStyle;
   /** "GAME OVER" Titel – SVG-Buchstaben (code-vibes) oder Text */
   gameOverTitle?: {
     type: 'svg-letters';
@@ -114,12 +107,8 @@ export interface Theme {
   /** Hintergrundfarbe des Spiel-Headers (Score, Spieler, Exit) */
   headerBackground: string;
   /** Exit-Button: Icon, Schrift und Button-Styling (pro Theme unterschiedlich) */
-  exitButton: {
+  exitButton: FontStyle & {
     icon: string;
-    fontFamily: string;
-    fontWeight: number;
-    fontSize: string;
-    color: string;
     /** Button-Container: gap, padding, background, border, border-radius */
     gap?: string;
     padding?: string;
@@ -138,12 +127,7 @@ export interface Theme {
     };
   };
   /** "Current player:" Anzeige im Spiel-Header – pro Theme unterschiedlich */
-  currentPlayer?: {
-    fontFamily: string;
-    fontWeight: number;
-    fontSize: string;
-    color: string;
-  };
+  currentPlayer?: FontStyle;
   /** Spieler-Indikator neben "Current player:" – Code vibes: label ohne BG, Rest: figure-white mit BG */
   playerIndicator?: {
     type: 'label' | 'figure';
