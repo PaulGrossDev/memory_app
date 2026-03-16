@@ -25,7 +25,7 @@ import type { ThemeId, Theme } from './types/game.types';
 // ============================================
 
 /** Alle möglichen Seiten-IDs */
-type PageId = 'home' | 'settings' | 'game' | 'game-over';
+type PageId = 'home' | 'settings' | 'game' | 'game-over' | 'winner';
 
 /** Setzt Hintergrundfarben und Exit-Button-Styling je nach Seite und Theme */
 function applyPageBackground(pageId: PageId): void {
@@ -38,11 +38,14 @@ function applyPageBackground(pageId: PageId): void {
   } else if (pageId === 'settings') {
     bgColor = '#ffffff';
     headerBg = 'transparent';
-  } else if (pageId === 'game' || pageId === 'game-over') {
+  } else if (pageId === 'game' || pageId === 'game-over' || pageId === 'winner') {
     const theme = getThemeById(getSettings().theme);
-    bgColor = pageId === 'game-over'
-      ? (theme?.gameOverBackground ?? theme?.pageBackground ?? '#303131')
-      : (theme?.pageBackground ?? '#303131');
+    bgColor =
+      pageId === 'winner'
+        ? (theme?.winnerBackground ?? theme?.gameOverBackground ?? theme?.pageBackground ?? '#303131')
+        : pageId === 'game-over'
+          ? (theme?.gameOverBackground ?? theme?.pageBackground ?? '#303131')
+          : (theme?.pageBackground ?? '#303131');
     headerBg = theme?.headerBackground ?? 'transparent';
     applyExitButtonTheme(theme);
     applyCurrentPlayerTheme(theme);
@@ -60,6 +63,10 @@ function applyPageBackground(pageId: PageId): void {
       applyGameOverScoreTheme(theme);
       updateGameOverScore();
       document.documentElement.style.setProperty('--game-over-title-gap', theme?.gameOverTitleGap ?? '104px');
+    } else if (pageId === 'winner') {
+      applyWinnerIntroTheme(theme);
+      applyWinnerNameTheme(theme);
+      updateWinnerDisplay();
     }
   } else {
     bgColor = '#303131';
@@ -482,6 +489,48 @@ function updateGameOverScore(): void {
   if (elOrange) elOrange.textContent = String(scoreOrange);
 }
 
+/** Wendet das Theme-Styling auf den Gewinner-Namen (Blue/Orange) an */
+function applyWinnerNameTheme(theme: Theme | undefined): void {
+  const name = theme?.winnerName;
+  const winnerEl = document.getElementById('winner');
+  if (!name || !winnerEl) return;
+
+  winnerEl.style.setProperty('--winner-name-font-family', name.fontFamily);
+  winnerEl.style.setProperty('--winner-name-font-weight', String(name.fontWeight));
+  winnerEl.style.setProperty('--winner-name-font-size', name.fontSize);
+  winnerEl.style.setProperty('--winner-name-text-align', name.textAlign ?? 'center');
+  winnerEl.style.setProperty('--winner-name-text-transform', name.textTransform ?? 'none');
+  winnerEl.style.setProperty('--winner-name-letter-spacing', name.letterSpacing ?? 'normal');
+  winnerEl.style.setProperty('--winner-name-box-shadow', name.boxShadow ?? 'none');
+  winnerEl.style.setProperty('--winner-name-text-shadow', name.textShadow ?? 'none');
+
+  const winner = getWinner();
+  if (name.color) {
+    winnerEl.style.setProperty('--winner-name-color', name.color);
+  } else if (winner === 'blue' && name.colorBlue) {
+    winnerEl.style.setProperty('--winner-name-color', name.colorBlue);
+  } else if (winner === 'orange' && name.colorOrange) {
+    winnerEl.style.setProperty('--winner-name-color', name.colorOrange);
+  } else {
+    winnerEl.style.setProperty('--winner-name-color', name.colorBlue ?? name.colorOrange ?? '#ffffff');
+  }
+}
+
+/** Wendet das Theme-Styling auf den "The winner is" Text an */
+function applyWinnerIntroTheme(theme: Theme | undefined): void {
+  const intro = theme?.winnerIntro;
+  const introEl = document.getElementById('winner-intro');
+  const winnerEl = document.getElementById('winner');
+  if (!intro || !introEl || !winnerEl) return;
+
+  introEl.textContent = 'The winner is';
+  winnerEl.style.setProperty('--winner-intro-font-family', intro.fontFamily);
+  winnerEl.style.setProperty('--winner-intro-font-weight', String(intro.fontWeight));
+  winnerEl.style.setProperty('--winner-intro-font-size', intro.fontSize);
+  winnerEl.style.setProperty('--winner-intro-color', intro.color);
+  winnerEl.style.setProperty('--winner-intro-line-height', intro.lineHeight ?? 'normal');
+}
+
 /** Wendet das Theme-Styling auf den "Final score" Text an */
 function applyGameOverFinalScoreTheme(theme: Theme | undefined): void {
   const finalScore = theme?.gameOverFinalScore;
@@ -495,9 +544,91 @@ function applyGameOverFinalScoreTheme(theme: Theme | undefined): void {
   document.documentElement.style.setProperty('--game-over-final-score-color', finalScore.color);
 }
 
-/** Zeigt die Game-Over-Seite */
+/** Ermittelt den Gewinner aus dem aktuellen Score */
+function getWinner(): 'blue' | 'orange' | 'draw' {
+  const { scoreBlue, scoreOrange } = getRuntimeState();
+  if (scoreBlue > scoreOrange) return 'blue';
+  if (scoreOrange > scoreBlue) return 'orange';
+  return 'draw';
+}
+
+/** Aktualisiert die Gewinner-Anzeige (Intro + Titel + Farbe) */
+function updateWinnerDisplay(): void {
+  const winner = getWinner();
+  const theme = getThemeById(getSettings().theme);
+  const introEl = document.getElementById('winner-intro');
+  const titleEl = document.getElementById('winner-title');
+  if (!titleEl) return;
+
+  const name = theme?.winnerName;
+  const winnerEl = document.getElementById('winner');
+  if (winner === 'blue') {
+    if (introEl) introEl.textContent = 'The winner is';
+    titleEl.textContent = 'Blue Player';
+    if (winnerEl) {
+      if (name?.colorBlue) winnerEl.style.setProperty('--winner-name-color', name.colorBlue);
+      else if (name?.color) winnerEl.style.setProperty('--winner-name-color', name.color);
+    }
+  } else if (winner === 'orange') {
+    if (introEl) introEl.textContent = 'The winner is';
+    titleEl.textContent = 'Orange Player';
+    if (winnerEl) {
+      if (name?.colorOrange) winnerEl.style.setProperty('--winner-name-color', name.colorOrange);
+      else if (name?.color) winnerEl.style.setProperty('--winner-name-color', name.color);
+    }
+  } else {
+    if (introEl) introEl.textContent = '';
+    titleEl.textContent = "It's a draw!";
+    if (winnerEl && name?.color) winnerEl.style.setProperty('--winner-name-color', name.color);
+  }
+}
+
+/** Zeigt die Game-Over-Seite und wechselt nach delay zur Winner-Page mit Animation */
 function showGameOver(): void {
   showPage('game-over');
+  const theme = getThemeById(getSettings().theme);
+  const config = theme?.gameOverToWinner ?? {
+    delayMs: 1200,
+    animation: 'move-in-top',
+    durationMs: 500,
+    easing: 'ease-out',
+  };
+  const timeoutId = window.setTimeout(() => {
+    transitionToWinner(config);
+  }, config.delayMs);
+  (window as unknown as { _gameOverTimeout?: number })._gameOverTimeout = timeoutId;
+}
+
+/** Wechselt von Game Over zur Winner-Page mit theme-spezifischer Animation */
+function transitionToWinner(config: {
+  animation: 'move-in-top' | 'move-in-bottom' | 'dissolve' | 'scale-in';
+  durationMs: number;
+  easing: string;
+}): void {
+  const gameOverPage = document.getElementById('game-over');
+  const winnerPage = document.getElementById('winner');
+  const winnerContent = document.getElementById('winner-content');
+  if (!gameOverPage || !winnerPage || !winnerContent) return;
+
+  gameOverPage.classList.remove('page--visible');
+  winnerPage.classList.add('page--visible');
+  applyPageBackground('winner');
+
+  winnerContent.classList.remove(
+    'winner__content--move-in-top',
+    'winner__content--move-in-bottom',
+    'winner__content--dissolve',
+    'winner__content--scale-in'
+  );
+  winnerContent.classList.add(`winner__content--${config.animation}`);
+  document.documentElement.style.setProperty(
+    '--winner-animation-duration',
+    `${config.durationMs}ms`
+  );
+  document.documentElement.style.setProperty(
+    '--winner-animation-easing',
+    config.easing
+  );
 }
 
 /** Behandelt Klick auf eine Karte */

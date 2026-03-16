@@ -1,0 +1,140 @@
+/**
+ * Gewinner-Anzeige
+ * Theme-spezifische Übergangs-Animationen (move-in-top, move-in-bottom, dissolve, scale-in)
+ */
+
+@use 'variables' as *;
+
+#winner.page--visible {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.winner__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+}
+
+.winner__top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+
+  /* Animationen – werden per Klasse + CSS-Variablen gesteuert */
+  &--move-in-top {
+    animation-name: winner-move-in-top;
+    animation-duration: var(--winner-animation-duration, 500ms);
+    animation-timing-function: var(--winner-animation-easing, ease-out);
+    animation-fill-mode: forwards;
+  }
+
+  &--move-in-bottom {
+    animation-name: winner-move-in-bottom;
+    animation-duration: var(--winner-animation-duration, 500ms);
+    animation-timing-function: var(--winner-animation-easing, ease-out);
+    animation-fill-mode: forwards;
+  }
+
+  &--dissolve {
+    animation-name: winner-dissolve;
+    animation-duration: var(--winner-animation-duration, 500ms);
+    animation-timing-function: var(--winner-animation-easing, ease-out);
+    animation-fill-mode: forwards;
+  }
+
+  &--scale-in {
+    animation-name: winner-scale-in;
+    animation-duration: var(--winner-animation-duration, 500ms);
+    animation-timing-function: var(--winner-animation-easing, ease-out);
+    animation-fill-mode: forwards;
+  }
+}
+
+@keyframes winner-move-in-top {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes winner-move-in-bottom {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes winner-dissolve {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes winner-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.winner__intro {
+  margin: 0;
+  font-family: var(--winner-intro-font-family, 'Red Rose');
+  font-weight: var(--winner-intro-font-weight, 400);
+  font-size: var(--winner-intro-font-size, 40px);
+  line-height: var(--winner-intro-line-height, normal);
+  color: var(--winner-intro-color, #ffffff);
+  text-align: center;
+}
+
+.winner__title {
+  margin: 0;
+  font-family: var(--winner-name-font-family, 'Red Rose');
+  font-weight: var(--winner-name-font-weight, 700);
+  font-size: var(--winner-name-font-size, 60px);
+  text-align: var(--winner-name-text-align, center);
+  color: var(--winner-name-color, #ffffff);
+  text-transform: var(--winner-name-text-transform, none);
+  letter-spacing: var(--winner-name-letter-spacing, normal);
+  box-shadow: var(--winner-name-box-shadow, none);
+  text-shadow: var(--winner-name-text-shadow, none);
+}
+
+.winner__btn-home {
+  padding: 16px 32px;
+  font-family: var(--game-over-final-score-font-family, 'Red Rose');
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.9);
+  }
+}

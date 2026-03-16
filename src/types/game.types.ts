@@ -27,6 +27,40 @@ export interface Theme {
   pageBackground: string;
   /** Hintergrundfarbe der Game-Over-Seite */
   gameOverBackground?: string;
+  /** Übergang von Game Over zur Winner-Page nach X ms */
+  gameOverToWinner?: {
+    delayMs: number;
+    animation: 'move-in-top' | 'move-in-bottom' | 'dissolve' | 'scale-in';
+    durationMs: number;
+    easing: string;
+  };
+  /** Hintergrundfarbe der Winner-Page (überschreibt gameOverBackground nur auf dieser Seite) */
+  winnerBackground?: string;
+  /** "The winner is" Text auf der Winner-Page – pro Theme unterschiedlich */
+  winnerIntro?: {
+    fontFamily: string;
+    fontWeight: number;
+    fontSize: string;
+    color: string;
+    lineHeight?: string;
+  };
+  /** Gewinner-Name (Blue/Orange) auf der Winner-Page – pro Theme unterschiedlich */
+  winnerName?: {
+    fontFamily: string;
+    fontWeight: number;
+    fontSize: string;
+    textAlign?: 'center';
+    /** Einheitliche Farbe (projects, foods) */
+    color?: string;
+    /** Getrennte Farben für Blue/Orange (code-vibes, gaming) */
+    colorBlue?: string;
+    colorOrange?: string;
+    textTransform?: 'uppercase' | 'none';
+    letterSpacing?: string;
+    boxShadow?: string;
+    /** Schatten an den Buchstaben (z.B. gaming) */
+    textShadow?: string;
+  };
   /** Abstand zwischen GAME OVER Titel und Final score (px) */
   gameOverTitleGap?: string;
   /** "Final score" Text unter dem GAME OVER Titel */
