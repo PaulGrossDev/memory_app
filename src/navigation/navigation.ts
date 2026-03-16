@@ -124,18 +124,31 @@ export function hideExitConfirmModal(): void {
   }
 }
 
-/** Zeigt die Game-Over-Seite und wechselt nach 1200ms zur Winner-Page */
+const GAME_OVER_TO_WINNER_DELAY_MS = 1200;
+const GAME_OVER_TO_WINNER_ANIMATION_MS = 500;
+
+/** Zeigt die Game-Over-Seite und wechselt nach 1200ms mit Animation zur Winner-Page */
 export function showGameOver(): void {
   showPage('game-over');
   const timeoutId = window.setTimeout(() => {
+    const app = document.getElementById('app');
     const gameOverPage = document.getElementById('game-over');
     const winnerPage = document.getElementById('winner');
-    if (!gameOverPage || !winnerPage) return;
+    if (!app || !gameOverPage || !winnerPage) return;
 
-    gameOverPage.classList.remove('page--visible');
-    winnerPage.classList.add('page--visible');
     applyPageBackground('winner');
-  }, 1200);
+    winnerPage.classList.add('page--visible');
+    app.classList.add('page--game-over-to-winner');
+    document.documentElement.classList.add('page--game-over-to-winner');
+    document.body.classList.add('page--game-over-to-winner');
+
+    window.setTimeout(() => {
+      app.classList.remove('page--game-over-to-winner');
+      document.documentElement.classList.remove('page--game-over-to-winner');
+      document.body.classList.remove('page--game-over-to-winner');
+      gameOverPage.classList.remove('page--visible');
+    }, GAME_OVER_TO_WINNER_ANIMATION_MS);
+  }, GAME_OVER_TO_WINNER_DELAY_MS);
   (window as unknown as { _gameOverTimeout?: number })._gameOverTimeout = timeoutId;
 }
 

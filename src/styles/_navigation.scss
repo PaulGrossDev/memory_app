@@ -4,6 +4,64 @@
 
 @use 'variables' as *;
 
+$transition-game-over-winner: 500ms;
+
+@keyframes page-slide-out-up {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes page-slide-in-from-bottom {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* Game-over → Winner Übergang: beide Seiten sichtbar, animiert */
+html.page--game-over-to-winner,
+body.page--game-over-to-winner {
+  overflow: hidden;
+}
+
+#app.page--game-over-to-winner {
+  overflow: hidden;
+  position: relative;
+
+  #game-over,
+  #winner {
+    display: flex !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    min-height: 100vh;
+    box-sizing: border-box;
+  }
+
+  #game-over {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    animation: page-slide-out-up $transition-game-over-winner ease-out forwards;
+  }
+
+  #winner {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(100%);
+    animation: page-slide-in-from-bottom $transition-game-over-winner ease-out forwards;
+  }
+}
+
 .page {
   padding: $spacing-xl;
   min-height: 100vh;
