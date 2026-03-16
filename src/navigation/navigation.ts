@@ -73,6 +73,8 @@ function applyPageBackground(pageId: PageId): void {
       updateGameOverScore();
       document.documentElement.style.setProperty('--game-over-title-gap', theme?.gameOverTitleGap ?? '104px');
     } else if (pageId === 'winner') {
+      const winnerEl = document.getElementById('winner');
+      if (winnerEl) winnerEl.dataset.theme = getSettings().theme;
       applyWinnerIntroTheme(theme);
       applyWinnerNameTheme(theme);
       applyWinnerIconTheme(theme);

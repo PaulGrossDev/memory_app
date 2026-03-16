@@ -7,19 +7,43 @@
 
 #winner.page--visible {
   @include flex-center-col;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
   text-align: center;
-  overflow-x: hidden;
+  overflow: hidden;
   width: 100%;
   box-sizing: border-box;
 }
 
-.winner__content,
+.winner__content {
+  @include flex-center-col;
+  position: relative;
+}
+
 .winner__top {
   @include flex-center-col;
+  position: relative;
 }
 
 .winner__content { gap: 64px; }
 .winner__top { gap: 8px; }
+
+.winner__confetti {
+  display: none;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translate(-50%, 40%);
+  width: 1234px;
+  height: 327px;
+  object-fit: contain;
+  pointer-events: none;
+
+  #winner[data-theme='code-vibes'] & {
+    display: block;
+  }
+}
 
 .winner__intro {
   margin: 0;
