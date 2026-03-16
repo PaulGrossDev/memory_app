@@ -66,6 +66,7 @@ function applyPageBackground(pageId: PageId): void {
     } else if (pageId === 'winner') {
       applyWinnerIntroTheme(theme);
       applyWinnerNameTheme(theme);
+      applyWinnerIconTheme(theme);
       updateWinnerDisplay();
     }
   } else {
@@ -489,6 +490,28 @@ function updateGameOverScore(): void {
   if (elOrange) elOrange.textContent = String(scoreOrange);
 }
 
+/** Wendet das Theme-Styling auf das Gewinner-Icon an (Pfad, Breite, Border, Container) */
+function applyWinnerIconTheme(theme: Theme | undefined): void {
+  const icon = theme?.winnerIcon;
+  const winnerEl = document.getElementById('winner');
+  if (!winnerEl) return;
+
+  if (icon) {
+    winnerEl.style.setProperty('--winner-icon-width', icon.width ?? '200px');
+    winnerEl.style.setProperty('--winner-icon-border', icon.border ?? 'none');
+    const c = icon.container;
+    winnerEl.style.setProperty('--winner-icon-container-padding', c?.padding ?? '0');
+    winnerEl.style.setProperty('--winner-icon-container-background', c?.background ?? 'transparent');
+    winnerEl.style.setProperty('--winner-icon-container-box-shadow', c?.boxShadow ?? 'none');
+  } else {
+    winnerEl.style.setProperty('--winner-icon-width', '200px');
+    winnerEl.style.setProperty('--winner-icon-border', 'none');
+    winnerEl.style.setProperty('--winner-icon-container-padding', '0');
+    winnerEl.style.setProperty('--winner-icon-container-background', 'transparent');
+    winnerEl.style.setProperty('--winner-icon-container-box-shadow', 'none');
+  }
+}
+
 /** Wendet das Theme-Styling auf den Gewinner-Namen (Blue/Orange) an */
 function applyWinnerNameTheme(theme: Theme | undefined): void {
   const name = theme?.winnerName;
@@ -552,19 +575,39 @@ function getWinner(): 'blue' | 'orange' | 'draw' {
   return 'draw';
 }
 
-/** Aktualisiert die Gewinner-Anzeige (Intro + Titel + Farbe) */
+/** Aktualisiert die Gewinner-Anzeige (Intro + Titel + Icon + Farbe) */
 function updateWinnerDisplay(): void {
   const winner = getWinner();
   const theme = getThemeById(getSettings().theme);
   const introEl = document.getElementById('winner-intro');
   const titleEl = document.getElementById('winner-title');
+  const iconEl = document.getElementById('winner-icon') as HTMLImageElement | null;
+  const winnerEl = document.getElementById('winner');
   if (!titleEl) return;
 
+  const base = import.meta.env.BASE_URL;
+  const resolvePath = (p: string): string => {
+    const path = p.startsWith('/') ? p.slice(1) : p;
+    const baseUrl = base === '/' ? window.location.origin + '/' : window.location.origin + base;
+    return new URL(path, baseUrl).href;
+  };
+
+  if (winnerEl) winnerEl.dataset.winner = winner;
+
   const name = theme?.winnerName;
-  const winnerEl = document.getElementById('winner');
+  const icon = theme?.winnerIcon;
+
   if (winner === 'blue') {
     if (introEl) introEl.textContent = 'The winner is';
     titleEl.textContent = 'Blue Player';
+    if (iconEl) {
+      if (icon) {
+        iconEl.src = resolvePath(icon.bluePath ?? icon.path ?? '/assets/icons/figure-blue.svg');
+        iconEl.style.display = 'block';
+      } else {
+        iconEl.style.display = 'none';
+      }
+    }
     if (winnerEl) {
       if (name?.colorBlue) winnerEl.style.setProperty('--winner-name-color', name.colorBlue);
       else if (name?.color) winnerEl.style.setProperty('--winner-name-color', name.color);
@@ -572,6 +615,14 @@ function updateWinnerDisplay(): void {
   } else if (winner === 'orange') {
     if (introEl) introEl.textContent = 'The winner is';
     titleEl.textContent = 'Orange Player';
+    if (iconEl) {
+      if (icon) {
+        iconEl.src = resolvePath(icon.orangePath ?? icon.path ?? '/assets/icons/figure-orange.svg');
+        iconEl.style.display = 'block';
+      } else {
+        iconEl.style.display = 'none';
+      }
+    }
     if (winnerEl) {
       if (name?.colorOrange) winnerEl.style.setProperty('--winner-name-color', name.colorOrange);
       else if (name?.color) winnerEl.style.setProperty('--winner-name-color', name.color);
@@ -579,6 +630,14 @@ function updateWinnerDisplay(): void {
   } else {
     if (introEl) introEl.textContent = '';
     titleEl.textContent = "It's a draw!";
+    if (iconEl) {
+      if (icon?.path) {
+        iconEl.src = resolvePath(icon.path);
+        iconEl.style.display = 'block';
+      } else {
+        iconEl.style.display = 'none';
+      }
+    }
     if (winnerEl && name?.color) winnerEl.style.setProperty('--winner-name-color', name.color);
   }
 }

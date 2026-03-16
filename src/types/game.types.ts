@@ -44,6 +44,24 @@ export interface Theme {
     color: string;
     lineHeight?: string;
   };
+  /** Gewinner-Icon auf der Winner-Page – pro Theme unterschiedlich */
+  winnerIcon?: {
+    /** Fester Pfad (z.B. gaming: Trophäe für alle) */
+    path?: string;
+    /** Getrennte Pfade für Blue/Orange (z.B. code-vibes) */
+    bluePath?: string;
+    orangePath?: string;
+    /** Breite: '200px', 'auto' für Originalgröße */
+    width?: string;
+    /** Border am Icon (z.B. projects: 6px solid #FFFFFF) – mit box-sizing: border-box innen */
+    border?: string;
+    /** Container um das Icon (z.B. foods: Padding, Hintergrund, Schatten) */
+    container?: {
+      padding?: string;
+      background?: string;
+      boxShadow?: string;
+    };
+  };
   /** Gewinner-Name (Blue/Orange) auf der Winner-Page – pro Theme unterschiedlich */
   winnerName?: {
     fontFamily: string;

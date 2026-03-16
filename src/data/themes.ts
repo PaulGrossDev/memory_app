@@ -29,6 +29,11 @@ export const THEMES: Theme[] = [
       fontSize: '40px',
       color: '#FFFFFF',
     },
+    winnerIcon: {
+      bluePath: '/assets/icons/figure-blue.svg',
+      orangePath: '/assets/icons/figure-orange.svg',
+      width: '200px',
+    },
     winnerName: {
       fontFamily: 'Red Rose',
       fontWeight: 700,
@@ -154,6 +159,10 @@ export const THEMES: Theme[] = [
       fontSize: '28px',
       color: '#FFFFFF',
       lineHeight: '100%',
+    },
+    winnerIcon: {
+      path: '/assets/icons/pockal.png',
+      width: 'auto',
     },
     winnerName: {
       fontFamily: 'Orbitron',
@@ -294,6 +303,11 @@ export const THEMES: Theme[] = [
       fontSize: '40px',
       color: '#FFFFFF',
     },
+    winnerIcon: {
+      bluePath: '/assets/themes/da-projects/icons/figure-blue.svg',
+      orangePath: '/assets/themes/da-projects/icons/figure-orange.svg',
+      width: '200px',
+    },
     winnerName: {
       fontFamily: 'Figtree',
       fontWeight: 700,
@@ -425,6 +439,16 @@ export const THEMES: Theme[] = [
       fontWeight: 400,
       fontSize: '40px',
       color: '#A45212',
+    },
+    winnerIcon: {
+      bluePath: '/assets/icons/figure-blue.svg',
+      orangePath: '/assets/icons/figure-orange.svg',
+      width: '200px',
+      container: {
+        padding: '24px 30px',
+        background: '#F7E6D5',
+        boxShadow: '3px 3px 6px 0px #00000040',
+      },
     },
     winnerName: {
       fontFamily: 'Klee One',

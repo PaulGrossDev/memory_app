@@ -17,7 +17,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 48px;
+  gap: 64px;
 }
 
 .winner__top {
@@ -106,6 +106,24 @@
   line-height: var(--winner-intro-line-height, normal);
   color: var(--winner-intro-color, #ffffff);
   text-align: center;
+}
+
+.winner__icon-wrap {
+  padding: var(--winner-icon-container-padding, 0);
+  background: var(--winner-icon-container-background, transparent);
+  box-shadow: var(--winner-icon-container-box-shadow, none);
+
+  [data-winner='draw'] & {
+    display: none;
+  }
+}
+
+.winner__icon {
+  width: var(--winner-icon-width, 200px);
+  height: auto;
+  display: block;
+  box-sizing: border-box;
+  border: var(--winner-icon-border, none);
 }
 
 .winner__title {
